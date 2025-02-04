@@ -13,7 +13,7 @@ public class Bobcat extends Animal {
 
     private static HashMap<String, Integer> createFoodSources() {
         HashMap<String, Integer> foodSources = new HashMap<>();
-        foodSources.put("Squirrel", 10);
+        foodSources.put("Squirrel", 20);
         return foodSources;
     }
 }

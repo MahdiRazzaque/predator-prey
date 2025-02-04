@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 public class Squirrel extends Animal {
-    private static final int BREEDING_AGE =5;
+    private static final int BREEDING_AGE = 5;
     private static final int MAX_AGE = 120;
     private static final double BREEDING_PROBABILITY = 0.08;
     private static final int MAX_LITTER_SIZE = 4;

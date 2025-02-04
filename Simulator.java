@@ -16,9 +16,9 @@ public class Simulator
     private static final int DEFAULT_DEPTH = 80;
 
     private static final double WOLF_CREATION_PROBABILITY = 0.005;
-    private static final double BOBCAT_CREATION_PROBABILITY = 0.01;
-    private static final double SQUIRREL_CREATION_PROBABILITY = 0.04;
-    private static final double GROUSE_CREATION_PROBABILITY = 0.05;
+    private static final double BOBCAT_CREATION_PROBABILITY = 0.02;
+    private static final double SQUIRREL_CREATION_PROBABILITY = 0.045;
+    private static final double GROUSE_CREATION_PROBABILITY = 0.045;
 
 
     // The current state of the field.

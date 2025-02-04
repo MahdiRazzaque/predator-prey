@@ -13,8 +13,8 @@ public class Wolf extends Animal {
 
     private static HashMap<String, Integer> createFoodSources() {
         HashMap<String, Integer> foodSources = new HashMap<>();
-        foodSources.put("Squirrel", 10);
-        foodSources.put("Grouse", 6);
+        foodSources.put("Squirrel", 12);
+        foodSources.put("Grouse", 7);
         return foodSources;
     }
 }
