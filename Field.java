@@ -115,23 +115,32 @@ public class Field {
     /**
      * Print out the number of foxes and rabbits in the field.
      */
-    public void fieldStats()
-    {
-        int numFoxes = 0, numRabbits = 0;
-        for(Entity anEntity : field.values()) {
-            if(anEntity instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    numFoxes++;
-                }
-            }
-            else if(anEntity instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    numRabbits++;
+    public void fieldStats() {
+        int numWolfs = 0, numBobcats = 0, numSquirrels = 0, numGrouse = 0;
+
+        for (Entity anEntity : field.values()) {
+            if (anEntity.isAlive()) {
+                switch (anEntity) {
+                    case Wolf wolf -> numWolfs++;
+                    case Bobcat bobcat -> numBobcats++;
+                    case Squirrel squirrel -> numSquirrels++;
+                    case Grouse grouse -> numGrouse++;
+                    default -> throw new IllegalStateException("Unexpected value: " + anEntity);
                 }
             }
         }
-        System.out.println("Rabbits: " + numRabbits +
-                           " Foxes: " + numFoxes);
+
+        String headerSeparator = "+-----------------+----------+\n";
+        String rowFormat = "| %-15s | %-8d |\n";
+
+        System.out.print(headerSeparator);
+        System.out.printf("| %-15s | %-8s |\n", "Animal", "Count");
+        System.out.print(headerSeparator);
+        System.out.printf(rowFormat, "Wolves", numWolfs);
+        System.out.printf(rowFormat, "Bobcats", numBobcats);
+        System.out.printf(rowFormat, "Squirrels", numSquirrels);
+        System.out.printf(rowFormat, "Grouse", numGrouse);
+        System.out.print(headerSeparator);
     }
 
     /**
@@ -146,25 +155,29 @@ public class Field {
      * Return whether there is at least one rabbit and one fox in the field.
      * @return true if there is at least one rabbit and one fox in the field.
      */
-    public boolean isViable()
-    {
+    public boolean isViable() {
         boolean rabbitFound = false;
         boolean foxFound = false;
-        Iterator<Entity> it = entity.iterator();
-        while(it.hasNext() && !(rabbitFound && foxFound)) {
+        boolean wolfFound = false;
+        boolean bobcatFound = false;
+        boolean squirrelFound = false;
+        boolean grouseFound = false;
+
+        Iterator<Entity> it = entity.iterator(); // Use the class's 'entities' list
+        while (it.hasNext() && !(wolfFound && bobcatFound && squirrelFound && grouseFound)) {
             Entity anEntity = it.next();
-            if(anEntity instanceof Rabbit rabbit) {
-                if(rabbit.isAlive()) {
-                    rabbitFound = true;
-                }
-            }
-            else if(anEntity instanceof Fox fox) {
-                if(fox.isAlive()) {
-                    foxFound = true;
-                }
+
+            if (anEntity instanceof Wolf wolf && wolf.isAlive()) {
+                wolfFound = true;
+            } else if (anEntity instanceof Bobcat bobcat && bobcat.isAlive()) {
+                bobcatFound = true;
+            } else if (anEntity instanceof Squirrel squirrel && squirrel.isAlive()) {
+                squirrelFound = true;
+            } else if (anEntity instanceof Grouse grouse && grouse.isAlive()) {
+                grouseFound = true;
             }
         }
-        return rabbitFound && foxFound;
+        return wolfFound && bobcatFound && squirrelFound && grouseFound;
     }
     
     /**

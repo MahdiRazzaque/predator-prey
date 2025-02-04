@@ -80,16 +80,6 @@ public class Animal extends Entity {
             nextFieldState.placeEntity(this, nextLocation);
         }
     }
-    
-    @Override
-    public String toString() {
-        return SPECIES.getSimpleName() + "{" +
-                "age=" + age +
-                ", alive=" + isAlive() +
-                ", location=" + getLocation() +
-                (FOOD_SOURCES.isEmpty() ? "" : ", foodLevel=" + foodLevel) +
-                '}';
-    }
 
     /**
      * Increase the age. This could result in the fox's death.
@@ -142,8 +132,7 @@ public class Animal extends Entity {
      * New births will be made into free adjacent locations.
      * @param freeLocations The locations that are free in the current field.
      */
-    private void giveBirth(Field nextFieldState, List<Location> freeLocations)
-    {
+    private void giveBirth(Field nextFieldState, List<Location> freeLocations) {
         int births = breed();
         if(births > 0) {
             for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
@@ -164,8 +153,7 @@ public class Animal extends Entity {
      * if it can breed.
      * @return The number of births (may be zero).
      */
-    private int breed()
-    {
+    private int breed() {
         int births = 0;
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
@@ -176,12 +164,7 @@ public class Animal extends Entity {
     /**
      * A fox can breed if it has reached the breeding age.
      */
-    private boolean canBreed()
-    {
+    private boolean canBreed() {
         return age >= BREEDING_AGE;
-    }
-
-    protected int getAge() {
-        return age;
     }
 }

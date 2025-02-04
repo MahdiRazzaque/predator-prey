@@ -14,10 +14,12 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.02;
-    // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
+
+    private static final double WOLF_CREATION_PROBABILITY = 0.005;
+    private static final double BOBCAT_CREATION_PROBABILITY = 0.01;
+    private static final double SQUIRREL_CREATION_PROBABILITY = 0.04;
+    private static final double GROUSE_CREATION_PROBABILITY = 0.05;
+
 
     // The current state of the field.
     private Field field;
@@ -113,26 +115,33 @@ public class Simulator
     /**
      * Randomly populate the field with foxes and rabbits.
      */
-    private void populate()
-    {
+    private void populate() {
         Random rand = Randomizer.getRandom();
         field.clear();
-        for(int row = 0; row < field.getDepth(); row++) {
-            for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
-                    Fox fox = new Fox(true, location);
-                    field.placeEntity(fox, location);
-                }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, location);
-                    field.placeEntity(rabbit, location);
+
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+
+                if (rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
+                    Wolf wolf = new Wolf(true, location);
+                    field.placeEntity(wolf, location);
+                } else if (rand.nextDouble() <= BOBCAT_CREATION_PROBABILITY) {
+                    Bobcat bobcat = new Bobcat(true, location);
+                    field.placeEntity(bobcat, location);
+                } else if (rand.nextDouble() <= SQUIRREL_CREATION_PROBABILITY) {
+                    Squirrel squirrel = new Squirrel(true, location);
+                    field.placeEntity(squirrel, location);
+                } else if (rand.nextDouble() <= GROUSE_CREATION_PROBABILITY) {
+                    Grouse grouse = new Grouse(true, location);
+                    field.placeEntity(grouse, location);
                 }
                 // else leave the location empty.
             }
         }
     }
+
+
 
     /**
      * Report on the number of each type of animal in the field.
