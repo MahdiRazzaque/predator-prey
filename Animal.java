@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Animal extends Entity {
-    private static int BREEDING_AGE;
-    private static int MAX_AGE;
-    private static double BREEDING_PROBABILITY;
-    private static int MAX_LITTER_SIZE;
-    private static HashMap<String, Integer> FOOD_SOURCES;
+    private int BREEDING_AGE;
+    private int MAX_AGE;
+    private double BREEDING_PROBABILITY;
+    private int MAX_LITTER_SIZE;
+    private HashMap<String, Integer> FOOD_SOURCES;
     private static final Random rand = Randomizer.getRandom();
+    private final Class<? extends Animal> SPECIES;
 
     private int age;
     private int foodLevel;
@@ -20,15 +21,17 @@ public class Animal extends Entity {
                   int maxAge,
                   double breedingProbability,
                   int maxLitterSize,
-                  HashMap<String, Integer> foodSources
+                  HashMap<String, Integer> foodSources,
+                  Class<? extends Animal> species
     ) {
         super(location);
 
-        BREEDING_AGE = breedingAge;
-        MAX_AGE = maxAge;
-        BREEDING_PROBABILITY = breedingProbability;
-        MAX_LITTER_SIZE = maxLitterSize;
-        FOOD_SOURCES = foodSources;
+        this.BREEDING_AGE = breedingAge;
+        this.MAX_AGE = maxAge;
+        this.BREEDING_PROBABILITY = breedingProbability;
+        this.MAX_LITTER_SIZE = maxLitterSize;
+        this.FOOD_SOURCES = foodSources;
+        this.SPECIES = species;
 
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -36,9 +39,11 @@ public class Animal extends Entity {
         else {
             age = 0;
         }
-        int foodLevel = 0;
-        for(int value : FOOD_SOURCES.values()) {
-            foodLevel = Math.max(foodLevel, rand.nextInt(value));
+        
+        // Initialize food level based on food sources
+        this.foodLevel = 0;
+        if (FOOD_SOURCES != null && !FOOD_SOURCES.isEmpty()) {
+            this.foodLevel = FOOD_SOURCES.values().iterator().next();
         }
     }
 
@@ -51,7 +56,9 @@ public class Animal extends Entity {
      */
     public void act(Field currentField, Field nextFieldState) {
         incrementAge();
-        decreaseFoodLevel();
+        if (!FOOD_SOURCES.isEmpty()) {
+            decreaseFoodLevel();
+        }
 
         if(!isAlive())
             return;
@@ -72,18 +79,15 @@ public class Animal extends Entity {
             setLocation(nextLocation);
             nextFieldState.placeEntity(this, nextLocation);
         }
-        else {
-            //setDead();
-        }
     }
     
     @Override
     public String toString() {
-        return "Fox{" +
+        return SPECIES.getSimpleName() + "{" +
                 "age=" + age +
                 ", alive=" + isAlive() +
                 ", location=" + getLocation() +
-                ", foodLevel=" + foodLevel +
+                (FOOD_SOURCES.isEmpty() ? "" : ", foodLevel=" + foodLevel) +
                 '}';
     }
 
@@ -122,19 +126,13 @@ public class Animal extends Entity {
             Location loc = it.next();
             Entity entity = field.getEntityAt(loc);
             for(String foodSource : FOOD_SOURCES.keySet()) {
-                if(entity.getClass().getName().equals(foodSource)) {
+                if(entity != null && foodSource.equals(entity.getClass().getSimpleName())) {
                     entity.setDead();
                     foodLevel = FOOD_SOURCES.get(foodSource);
                     foodLocation = loc;
+                    break;
                 }
             }
-//            if(entity instanceof Rabbit rabbit) {
-//                if(rabbit.isAlive()) {
-//                    rabbit.setDead();
-//                    foodLevel = RABBIT_FOOD_VALUE;
-//                    foodLocation = loc;
-//                }
-//            }
         }
         return foodLocation;
     }
@@ -146,14 +144,17 @@ public class Animal extends Entity {
      */
     private void giveBirth(Field nextFieldState, List<Location> freeLocations)
     {
-        // New foxes are born into adjacent locations.
-        // Get a list of adjacent free locations.
         int births = breed();
         if(births > 0) {
-            for (int b = 0; b < births && ! freeLocations.isEmpty(); b++) {
+            for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
-                Fox young = new Fox(false, loc);
-                nextFieldState.placeEntity(young, loc);
+                try {
+                    Animal young = SPECIES.getDeclaredConstructor(boolean.class, Location.class)
+                            .newInstance(false, loc);
+                    nextFieldState.placeEntity(young, loc);
+                } catch (Exception e) {
+                    System.err.println("Failed to create new " + SPECIES.getSimpleName());
+                }
             }
         }
     }
@@ -165,12 +166,9 @@ public class Animal extends Entity {
      */
     private int breed()
     {
-        int births;
+        int births = 0;
         if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
-        }
-        else {
-            births = 0;
         }
         return births;
     }
@@ -181,5 +179,9 @@ public class Animal extends Entity {
     private boolean canBreed()
     {
         return age >= BREEDING_AGE;
+    }
+
+    protected int getAge() {
+        return age;
     }
 }
