@@ -13,8 +13,9 @@ import java.util.Map;
  * @author David J. Barnes and Michael Kölling
  * @version 7.0
  */
-public class SimulatorView extends JFrame
-{
+public class SimulatorView extends JFrame {
+
+    private Simulator simulator;
     // Colors used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
 
@@ -26,6 +27,9 @@ public class SimulatorView extends JFrame
     private final JLabel stepLabel;
     private final JLabel population;
     private final FieldView fieldView;
+
+    private final String TIME_PREFIX = "Time: ";
+    private final JLabel timeLabel;
     
     // A map for storing colors for participants in the simulation
     private final Map<Class<?>, Color> colors;
@@ -37,8 +41,9 @@ public class SimulatorView extends JFrame
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
-    {
+    public SimulatorView(int height, int width, Simulator simulator) {
+        this.simulator = simulator;
+
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
         setColor(Wolf.class, Color.gray);
@@ -53,9 +58,15 @@ public class SimulatorView extends JFrame
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
+        timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
+
+        JPanel northPanel = new JPanel();
+        northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        northPanel.add(timeLabel);
+        northPanel.add(stepLabel);
 
         Container contents = getContentPane();
-        contents.add(stepLabel, BorderLayout.NORTH);
+        contents.add(northPanel, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
         pack();
@@ -99,6 +110,8 @@ public class SimulatorView extends JFrame
         }
             
         stepLabel.setText(STEP_PREFIX + step);
+        timeLabel.setText(TIME_PREFIX + simulator.getTime().getFormattedTime());
+
         stats.reset();
         
         fieldView.preparePaint();

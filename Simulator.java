@@ -20,7 +20,6 @@ public class Simulator
     private static final double SQUIRREL_CREATION_PROBABILITY = 0.045;
     private static final double GROUSE_CREATION_PROBABILITY = 0.045;
 
-
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -28,12 +27,14 @@ public class Simulator
     // A graphical view of the simulation.
     private final SimulatorView view;
 
+    private Time time;
+
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator()
-    {
+    public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        time = new Time();
     }
     
     /**
@@ -41,19 +42,24 @@ public class Simulator
      * @param depth Depth of the field. Must be greater than zero.
      * @param width Width of the field. Must be greater than zero.
      */
-    public Simulator(int depth, int width)
-    {
+    public Simulator(int depth, int width) {
         if(width <= 0 || depth <= 0) {
             System.out.println("The dimensions must be >= zero.");
             System.out.println("Using default values.");
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
+
+        time = new Time();
         
         field = new Field(depth, width);
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(depth, width, this);
 
         reset();
+    }
+
+    public Time getTime() {
+        return time;
     }
     
     /**
@@ -83,8 +89,8 @@ public class Simulator
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each fox and rabbit.
      */
-    public void simulateOneStep()
-    {
+    public void simulateOneStep() {
+        time.incrementTime();
         step++;
         // Use a separate Field to store the starting state of
         // the next step.
