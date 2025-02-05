@@ -30,6 +30,7 @@ public class SimulatorView extends JFrame {
 
     private final String TIME_PREFIX = "Time: ";
     private final JLabel timeLabel;
+    private final JLabel dayOrNightLabel;
     
     // A map for storing colors for participants in the simulation
     private final Map<Class<?>, Color> colors;
@@ -58,12 +59,15 @@ public class SimulatorView extends JFrame {
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
-        timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
+        timeLabel = new JLabel(TIME_PREFIX);
+        dayOrNightLabel = new JLabel("Day/Night");
+
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         northPanel.add(timeLabel);
         northPanel.add(stepLabel);
+        northPanel.add(dayOrNightLabel);
 
         Container contents = getContentPane();
         contents.add(northPanel, BorderLayout.NORTH);
@@ -103,14 +107,14 @@ public class SimulatorView extends JFrame {
      * @param step Which iteration step it is.
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field)
-    {
+    public void showStatus(int step, Field field) {
         if(!isVisible()) {
             setVisible(true);
         }
             
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + simulator.getTime().getFormattedTime());
+        dayOrNightLabel.setText(simulator.getTime().isDay() ? "Day ☀️" : "Night 🌙");
 
         stats.reset();
         

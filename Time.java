@@ -31,4 +31,12 @@ public class Time {
     public String getFormattedTime() {
         return String.format("%02d:%02d", hours, minutes);
     }
+
+    public boolean isDay() {
+        return hours >= 6 && hours < 18;
+    }
+
+    public boolean isNight() {
+        return !isDay();
+    }
 }

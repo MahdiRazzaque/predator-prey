@@ -4,14 +4,17 @@ abstract public class Entity {
     // The animal's position.
     private Location location;
 
+    protected Simulator simulator;
+
     /**
      * Constructor for objects of class Animal.
      * @param location The animal's location.
      */
-    public Entity(Location location)
+    public Entity(Location location, Simulator simulator)
     {
         this.alive = true;
         this.location = location;
+        this.simulator = simulator;
     }
 
     /**
@@ -19,7 +22,7 @@ abstract public class Entity {
      * @param currentField The current state of the field.
      * @param nextFieldState The new state being built.
      */
-    abstract public void act(Field currentField, Field nextFieldState);
+    abstract protected void act(Field currentField, Field nextFieldState);
 
     /**
      * Check whether the animal is alive or not.

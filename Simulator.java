@@ -34,7 +34,7 @@ public class Simulator
      */
     public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
-        time = new Time();
+        time = new Time(17,00, 10);
     }
     
     /**
@@ -131,16 +131,16 @@ public class Simulator
                 Gender gender = Gender.getRandomGender();
 
                 if (rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
-                    Wolf wolf = new Wolf(true, location, gender);
+                    Wolf wolf = new Wolf(true, location, gender, this);
                     field.placeEntity(wolf, location);
                 } else if (rand.nextDouble() <= BOBCAT_CREATION_PROBABILITY) {
-                    Bobcat bobcat = new Bobcat(true, location, gender);
+                    Bobcat bobcat = new Bobcat(true, location, gender, this);
                     field.placeEntity(bobcat, location);
                 } else if (rand.nextDouble() <= SQUIRREL_CREATION_PROBABILITY) {
-                    Squirrel squirrel = new Squirrel(true, location, gender);
+                    Squirrel squirrel = new Squirrel(true, location, gender, this);
                     field.placeEntity(squirrel, location);
                 } else if (rand.nextDouble() <= GROUSE_CREATION_PROBABILITY) {
-                    Grouse grouse = new Grouse(true, location, gender);
+                    Grouse grouse = new Grouse(true, location, gender, this);
                     field.placeEntity(grouse, location);
                 }
                 // else leave the location empty.
