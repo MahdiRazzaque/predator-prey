@@ -11,6 +11,7 @@ public class Animal extends Entity {
     private HashMap<String, Integer> FOOD_SOURCES;
     private static final Random rand = Randomizer.getRandom();
     private final Class<? extends Animal> SPECIES;
+    private Gender gender;
 
     private int age;
     private int foodLevel;
@@ -22,7 +23,8 @@ public class Animal extends Entity {
                   double breedingProbability,
                   int maxLitterSize,
                   HashMap<String, Integer> foodSources,
-                  Class<? extends Animal> species
+                  Class<? extends Animal> species,
+                  Gender gender
     ) {
         super(location);
 
@@ -32,6 +34,7 @@ public class Animal extends Entity {
         this.MAX_LITTER_SIZE = maxLitterSize;
         this.FOOD_SOURCES = foodSources;
         this.SPECIES = species;
+        this.gender = gender;
 
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -45,6 +48,10 @@ public class Animal extends Entity {
         if (FOOD_SOURCES != null && !FOOD_SOURCES.isEmpty()) {
             this.foodLevel = FOOD_SOURCES.values().iterator().next();
         }
+    }
+
+    protected Gender getGender() {
+        return gender;
     }
 
     /**
@@ -66,7 +73,7 @@ public class Animal extends Entity {
         List<Location> freeLocations =
                 nextFieldState.getFreeAdjacentLocations(getLocation());
         if(! freeLocations.isEmpty()) {
-            giveBirth(nextFieldState, freeLocations);
+            giveBirth(nextFieldState, freeLocations, currentField);
         }
         // Move towards a source of food if found.
         Location nextLocation = findFood(currentField);
@@ -132,14 +139,14 @@ public class Animal extends Entity {
      * New births will be made into free adjacent locations.
      * @param freeLocations The locations that are free in the current field.
      */
-    private void giveBirth(Field nextFieldState, List<Location> freeLocations) {
-        int births = breed();
+    private void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField) { // Modify giveBirth to accept currentField
+        int births = breed(currentField);
         if(births > 0) {
             for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
                 try {
-                    Animal young = SPECIES.getDeclaredConstructor(boolean.class, Location.class)
-                            .newInstance(false, loc);
+                    Animal young = SPECIES.getDeclaredConstructor(boolean.class, Location.class, Gender.class) // Add Gender to constructor call
+                            .newInstance(false, loc, Gender.getRandomGender()); // Pass random gender
                     nextFieldState.placeEntity(young, loc);
                 } catch (Exception e) {
                     System.err.println("Failed to create new " + SPECIES.getSimpleName());
@@ -153,9 +160,9 @@ public class Animal extends Entity {
      * if it can breed.
      * @return The number of births (may be zero).
      */
-    private int breed() {
+    private int breed(Field field) {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= BREEDING_PROBABILITY) {
+        if(canBreed(field) && rand.nextDouble() <= BREEDING_PROBABILITY) {
             births = rand.nextInt(MAX_LITTER_SIZE) + 1;
         }
         return births;
@@ -164,7 +171,19 @@ public class Animal extends Entity {
     /**
      * A fox can breed if it has reached the breeding age.
      */
-    private boolean canBreed() {
-        return age >= BREEDING_AGE;
+    private boolean canBreed(Field field) {
+        if (age >= BREEDING_AGE) {
+            List<Location> adjacentLocations = field.getAdjacentLocations(getLocation());
+            for (Location loc : adjacentLocations) {
+                Entity neighbor = field.getEntityAt(loc);
+                if (neighbor != null &&
+                        neighbor.getClass() == this.getClass() &&
+                        ((Animal) neighbor).getGender() != this.gender &&
+                        neighbor.isAlive()) {
+                    return true; // Found a suitable mate
+                }
+            }
+        }
+        return false; // No mate found or not old enough
     }
 }

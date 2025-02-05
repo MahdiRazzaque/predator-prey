@@ -115,31 +115,58 @@ public class Field {
     /**
      * Print out the number of foxes and rabbits in the field.
      */
+    // In Field.java, replace the existing fieldStats() method with this updated version:
+    /**
+     * Print out the number of foxes and rabbits in the field, separated by gender.
+     */
     public void fieldStats() {
-        int numWolfs = 0, numBobcats = 0, numSquirrels = 0, numGrouse = 0;
+        int numWolfMales = 0, numWolfFemales = 0;
+        int numBobcatMales = 0, numBobcatFemales = 0;
+        int numSquirrelMales = 0, numSquirrelFemales = 0;
+        int numGrouseMales = 0, numGrouseFemales = 0;
 
         for (Entity anEntity : field.values()) {
             if (anEntity.isAlive()) {
-                switch (anEntity) {
-                    case Wolf wolf -> numWolfs++;
-                    case Bobcat bobcat -> numBobcats++;
-                    case Squirrel squirrel -> numSquirrels++;
-                    case Grouse grouse -> numGrouse++;
-                    default -> throw new IllegalStateException("Unexpected value: " + anEntity);
+                if (anEntity instanceof Wolf wolf) {
+                    if (wolf.getGender() == Gender.MALE) {
+                        numWolfMales++;
+                    } else {
+                        numWolfFemales++;
+                    }
+                } else if (anEntity instanceof Bobcat bobcat) {
+                    if (bobcat.getGender() == Gender.MALE) {
+                        numBobcatMales++;
+                    } else {
+                        numBobcatFemales++;
+                    }
+                } else if (anEntity instanceof Squirrel squirrel) {
+                    if (squirrel.getGender() == Gender.MALE) {
+                        numSquirrelMales++;
+                    } else {
+                        numSquirrelFemales++;
+                    }
+                } else if (anEntity instanceof Grouse grouse) {
+                    if (grouse.getGender() == Gender.MALE) {
+                        numGrouseMales++;
+                    } else {
+                        numGrouseFemales++;
+                    }
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + anEntity);
                 }
             }
         }
 
-        String headerSeparator = "+-----------------+----------+\n";
-        String rowFormat = "| %-15s | %-8d |\n";
+        String headerSeparator = "+-----------------+----------+--------+--------+\n";
+        String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n";
 
         System.out.print(headerSeparator);
-        System.out.printf("| %-15s | %-8s |\n", "Animal", "Count");
+        System.out.printf("| %-15s | %-8s | %-6s | %-6s |\n", "Animal", "Total", "Male", "Female");
         System.out.print(headerSeparator);
-        System.out.printf(rowFormat, "Wolves", numWolfs);
-        System.out.printf(rowFormat, "Bobcats", numBobcats);
-        System.out.printf(rowFormat, "Squirrels", numSquirrels);
-        System.out.printf(rowFormat, "Grouse", numGrouse);
+        System.out.printf(rowFormat, "Wolves", numWolfMales + numWolfFemales, numWolfMales, numWolfFemales);
+        System.out.printf(rowFormat, "Bobcats", numBobcatMales + numBobcatFemales, numBobcatMales, numBobcatFemales);
+        System.out.printf(rowFormat, "Squirrels", numSquirrelMales + numSquirrelFemales, numSquirrelMales, numSquirrelFemales);
+        System.out.printf(rowFormat, "Grouse", numGrouseMales + numGrouseFemales, numGrouseMales, numGrouseFemales);
         System.out.print(headerSeparator);
     }
 

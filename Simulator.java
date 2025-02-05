@@ -122,18 +122,19 @@ public class Simulator
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
+                Gender gender = Gender.getRandomGender();
 
                 if (rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
-                    Wolf wolf = new Wolf(true, location);
+                    Wolf wolf = new Wolf(true, location, gender);
                     field.placeEntity(wolf, location);
                 } else if (rand.nextDouble() <= BOBCAT_CREATION_PROBABILITY) {
-                    Bobcat bobcat = new Bobcat(true, location);
+                    Bobcat bobcat = new Bobcat(true, location, gender);
                     field.placeEntity(bobcat, location);
                 } else if (rand.nextDouble() <= SQUIRREL_CREATION_PROBABILITY) {
-                    Squirrel squirrel = new Squirrel(true, location);
+                    Squirrel squirrel = new Squirrel(true, location, gender);
                     field.placeEntity(squirrel, location);
                 } else if (rand.nextDouble() <= GROUSE_CREATION_PROBABILITY) {
-                    Grouse grouse = new Grouse(true, location);
+                    Grouse grouse = new Grouse(true, location, gender);
                     field.placeEntity(grouse, location);
                 }
                 // else leave the location empty.
