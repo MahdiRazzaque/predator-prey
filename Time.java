@@ -1,21 +1,24 @@
 public class Time {
     private int hours;
     private int minutes;
+    private int days;
     private int timeStepIncrement; // Minutes to increment per simulation step
 
     public Time() {
-        this(0, 0, 60); // Default to start at 00:00 and increment by 60 minutes (1 hour) per step
+        this(0, 0, 0, 60); // Default to start at 00:00 and increment by 60 minutes (1 hour) per step
     }
 
-    public Time(int startHour, int startMinute, int timeStepIncrement) {
+    public Time(int startHour, int startMinute, int startDay, int timeStepIncrement) {
         this.hours = startHour;
         this.minutes = startMinute;
+        this.days = 0;
         this.timeStepIncrement = timeStepIncrement;
     }
 
     public void incrementTime() {
         minutes += timeStepIncrement;
         hours += minutes / 60;
+        days += hours / 24;
         minutes %= 60;
         hours %= 24;
     }
@@ -26,6 +29,10 @@ public class Time {
 
     public int getMinute() {
         return minutes;
+    }
+
+    public int getDays() {
+        return days;
     }
 
     public String getFormattedTime() {

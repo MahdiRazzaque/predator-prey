@@ -30,8 +30,10 @@ public class SimulatorView extends JFrame {
 
     private final String TIME_PREFIX = "Time: ";
     private final JLabel timeLabel;
+    private final String DAY_PREFIX = "Days: ";
+    private final JLabel daysLabel;
     private final JLabel dayOrNightLabel;
-    
+
     // A map for storing colors for participants in the simulation
     private final Map<Class<?>, Color> colors;
     // A statistics object computing and storing simulation information
@@ -60,13 +62,21 @@ public class SimulatorView extends JFrame {
         
         fieldView = new FieldView(height, width);
         timeLabel = new JLabel(TIME_PREFIX);
+        daysLabel = new JLabel(DAY_PREFIX);
         dayOrNightLabel = new JLabel("Day/Night");
+        JLabel dividerLabel1 = new JLabel(" | ");
+        JLabel dividerLabel2 = new JLabel(" | ");
+        JLabel dividerLabel3 = new JLabel(" | ");
 
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        northPanel.add(daysLabel);
+        northPanel.add(dividerLabel1);
         northPanel.add(timeLabel);
+        northPanel.add(dividerLabel2);
         northPanel.add(stepLabel);
+        northPanel.add(dividerLabel3);
         northPanel.add(dayOrNightLabel);
 
         Container contents = getContentPane();
@@ -111,7 +121,8 @@ public class SimulatorView extends JFrame {
         if(!isVisible()) {
             setVisible(true);
         }
-            
+
+        daysLabel.setText(DAY_PREFIX + simulator.getTime().getDays());
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + simulator.getTime().getFormattedTime());
         dayOrNightLabel.setText(simulator.getTime().isDay() ? "Day ☀️" : "Night 🌙");

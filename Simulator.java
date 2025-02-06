@@ -34,7 +34,7 @@ public class Simulator
      */
     public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
-        time = new Time(17,00, 10);
+        time = new Time(17,0,0, 10);
     }
     
     /**
