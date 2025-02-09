@@ -166,7 +166,6 @@ public class Field {
 
         String headerSeparator = "+-----------------+----------+--------+--------+\n";
         String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n"; // Used for animals table
-        String plantRowFormat = "| %-15s | %-8s |\n"; // Used for plants table
 
         System.out.print(headerSeparator);
         System.out.printf("| %-15s | %-8s | %-6s | %-6s |\n", "Animal", "Total", "Male", "Female");
@@ -181,12 +180,15 @@ public class Field {
         System.out.print(headerSeparator);
 
 // Plants table
+        String plantHeaderSeparator = "+-----------------+----------+\n"; // 2 columns
+        String plantRowFormat = "| %-15s | %-8d |\n"; // Only 2 placeholders
+
+        System.out.print(plantHeaderSeparator);
         System.out.printf("| %-15s | %-8s |\n", "Plant", "Total");
-        System.out.print(headerSeparator);
+        System.out.print(plantHeaderSeparator);
         System.out.printf(plantRowFormat, "Seeds", numSeeds);
         System.out.printf(plantRowFormat, "Berries", numBerries);
-
-        System.out.print(headerSeparator);
+        System.out.print(plantHeaderSeparator);
 
     }
 
