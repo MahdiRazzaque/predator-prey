@@ -53,6 +53,11 @@ public class SimulatorView extends JFrame {
         setColor(Bobcat.class, Color.yellow);
         setColor(Squirrel.class, Color.lightGray);
         setColor(Grouse.class, Color.green);
+        setColor(Plant.class, new Color(139, 69, 19));  // Brown for generic plants
+        setColor(Seeds.class, new Color(0, 0, 128));   // Blue for Seeds
+        setColor(Berries.class, new Color(255, 0, 0)); // Red for Berries
+
+
 
         setTitle("Predator and Prey Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);

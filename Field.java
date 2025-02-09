@@ -124,6 +124,8 @@ public class Field {
         int numBobcatMales = 0, numBobcatFemales = 0;
         int numSquirrelMales = 0, numSquirrelFemales = 0;
         int numGrouseMales = 0, numGrouseFemales = 0;
+        int numSeeds = 0;
+        int numBerries = 0;
 
         for (Entity anEntity : field.values()) {
             if (anEntity.isAlive()) {
@@ -151,23 +153,41 @@ public class Field {
                     } else {
                         numGrouseFemales++;
                     }
+                } else if (anEntity instanceof Seeds seeds) {
+                    numSeeds++;
+                } else if (anEntity instanceof Berries berries) {
+                    numBerries++;
                 } else {
-                    throw new IllegalStateException("Unexpected value: " + anEntity);
+                    System.err.println("Warning: Unexpected entity type in field: " + anEntity.getClass().getSimpleName());
+
                 }
             }
         }
 
         String headerSeparator = "+-----------------+----------+--------+--------+\n";
-        String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n";
+        String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n"; // Used for animals table
+        String plantRowFormat = "| %-15s | %-8s |\n"; // Used for plants table
 
         System.out.print(headerSeparator);
         System.out.printf("| %-15s | %-8s | %-6s | %-6s |\n", "Animal", "Total", "Male", "Female");
         System.out.print(headerSeparator);
+
+// Animals table
         System.out.printf(rowFormat, "Wolves", numWolfMales + numWolfFemales, numWolfMales, numWolfFemales);
         System.out.printf(rowFormat, "Bobcats", numBobcatMales + numBobcatFemales, numBobcatMales, numBobcatFemales);
         System.out.printf(rowFormat, "Squirrels", numSquirrelMales + numSquirrelFemales, numSquirrelMales, numSquirrelFemales);
         System.out.printf(rowFormat, "Grouse", numGrouseMales + numGrouseFemales, numGrouseMales, numGrouseFemales);
+
         System.out.print(headerSeparator);
+
+// Plants table
+        System.out.printf("| %-15s | %-8s |\n", "Plant", "Total");
+        System.out.print(headerSeparator);
+        System.out.printf(plantRowFormat, "Seeds", numSeeds);
+        System.out.printf(plantRowFormat, "Berries", numBerries);
+
+        System.out.print(headerSeparator);
+
     }
 
     /**

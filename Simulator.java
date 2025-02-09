@@ -19,6 +19,9 @@ public class Simulator
     private static final double BOBCAT_CREATION_PROBABILITY = 0.02;
     private static final double SQUIRREL_CREATION_PROBABILITY = 0.045;
     private static final double GROUSE_CREATION_PROBABILITY = 0.045;
+    private static final double SEEDS_CREATION_PROBABILITY = 0.08;
+    private static final double BERRIES_CREATION_PROBABILITY = 0.05;
+
 
     // The current state of the field.
     private Field field;
@@ -142,6 +145,12 @@ public class Simulator
                 } else if (rand.nextDouble() <= GROUSE_CREATION_PROBABILITY) {
                     Grouse grouse = new Grouse(true, location, gender, this);
                     field.placeEntity(grouse, location);
+                } else if (rand.nextDouble() <= SEEDS_CREATION_PROBABILITY) {
+                    Seeds seeds = new Seeds(location, this, time);
+                    field.placeEntity(seeds, location);
+                } else if (rand.nextDouble() <= BERRIES_CREATION_PROBABILITY) {
+                    Berries berries = new Berries(location, this, time);
+                    field.placeEntity(berries, location);
                 }
                 // else leave the location empty.
             }

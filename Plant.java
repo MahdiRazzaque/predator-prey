@@ -7,10 +7,10 @@ public class Plant extends Entity{
     private final int lifespan;
     private final int spreadRate;
     private int age;
-    private Time time;
     private final int growthStartHour;
     private final int growthEndHour;
     private int growthStage;
+    private Time time;
 
     public Plant(String name,
                  int growthRate,
@@ -19,9 +19,10 @@ public class Plant extends Entity{
                  int spreadRate,
                  int growthStartHour,
                  int growthEndHour,
-                 int growthStage,
+                 int growthStage ,
                  Location location,
-                 Simulator simulator) {
+                 Simulator simulator,
+                 Time time) {
         super (location, simulator);
         this.name = name;
         this.growthRate = growthRate;
@@ -99,7 +100,7 @@ public class Plant extends Entity{
             Location newLocation = freeLocations.remove(0);
             Plant newPlant = new Plant(name, growthRate, reproductionRate, lifespan, spreadRate,
                     growthStartHour, growthEndHour, growthStage,
-                    newLocation, simulator);
+                    newLocation, simulator, time);
             nextFieldState.placeEntity(newPlant, newLocation);
         }
     }
@@ -113,7 +114,7 @@ public class Plant extends Entity{
         for (Location location : freeLocations) {
             Plant newPlant = new Plant(name, growthRate, reproductionRate, lifespan, spreadRate,
                     growthStartHour, growthEndHour, growthStage,
-                    location, simulator);
+                    location, simulator, time);
             nextFieldState.placeEntity(newPlant, location);
         }
     }
