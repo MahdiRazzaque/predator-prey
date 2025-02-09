@@ -10,6 +10,7 @@ public class Plant extends Entity{
     private final int growthStartHour;
     private final int growthEndHour;
     private int growthStage;
+    protected final Class<? extends Plant> PLANT_TYPE;
     private Time time;
 
     public Plant(String name,
@@ -22,7 +23,8 @@ public class Plant extends Entity{
                  int growthStage ,
                  Location location,
                  Simulator simulator,
-                 Time time) {
+                 Time time,
+                 Class<? extends Plant> plantType) {
         super (location, simulator);
         this.name = name;
         this.growthRate = growthRate;
@@ -34,6 +36,7 @@ public class Plant extends Entity{
         this.growthStartHour = growthStartHour;
         this.growthEndHour = growthEndHour;
         this.growthStage = 0;
+        this.PLANT_TYPE = plantType;
     }
 
     /**
@@ -98,10 +101,13 @@ public class Plant extends Entity{
 
         if (!freeLocations.isEmpty()) {
             Location newLocation = freeLocations.remove(0);
-            Plant newPlant = new Plant(name, growthRate, reproductionRate, lifespan, spreadRate,
-                    growthStartHour, growthEndHour, growthStage,
-                    newLocation, simulator, time);
-            nextFieldState.placeEntity(newPlant, newLocation);
+            try {
+                Plant newPlant = PLANT_TYPE.getDeclaredConstructor(Location.class, Simulator.class, Time.class)
+                        .newInstance(newLocation, simulator, time);
+                nextFieldState.placeEntity(newPlant, newLocation);
+            } catch (Exception e) {
+                System.err.println("Failed to create new " + PLANT_TYPE.getSimpleName());
+            }
         }
     }
 
@@ -112,10 +118,13 @@ public class Plant extends Entity{
         List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
 
         for (Location location : freeLocations) {
-            Plant newPlant = new Plant(name, growthRate, reproductionRate, lifespan, spreadRate,
-                    growthStartHour, growthEndHour, growthStage,
-                    location, simulator, time);
-            nextFieldState.placeEntity(newPlant, location);
+            try {
+                Plant newPlant = PLANT_TYPE.getDeclaredConstructor(Location.class, Simulator.class, Time.class)
+                        .newInstance(location, simulator, time);
+                nextFieldState.placeEntity(newPlant, location);
+            } catch (Exception e) {
+                System.err.println("Failed to create new " + PLANT_TYPE.getSimpleName());
+            }
         }
     }
 
