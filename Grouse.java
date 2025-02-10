@@ -14,6 +14,7 @@ public class Grouse extends Animal{
 
     private static HashMap<String, Integer> createFoodSources() {
         HashMap<String, Integer> foodSources = new HashMap<>();
+        foodSources.put("Seeds", 5);
         return foodSources;
     }
 

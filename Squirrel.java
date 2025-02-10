@@ -13,6 +13,7 @@ public class Squirrel extends Animal {
 
     private static HashMap<String, Integer> createFoodSources() {
         HashMap<String, Integer> foodSources = new HashMap<>();
+        foodSources.put("Berries", 8);
         return foodSources;
     }
 }
