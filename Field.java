@@ -1,59 +1,52 @@
 import java.util.*;
 
 /**
- * Represent a rectangular grid of field positions.
- * Each position is able to store a single animal/object.
- * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.0
+ * Represents a rectangular grid of field positions. Each position is able to store a single
+ * entity (e.g., an animal or a plant).  Provides methods for managing entities within the field,
+ * including placing, retrieving, and moving them.
+ *
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque
+ * @version 10.02.2025
  */
 public class Field {
-    // A random number generator for providing random locations.
-    private static final Random rand = Randomizer.getRandom();
-    
-    // The dimensions of the field.
-    private final int depth, width;
-    // Animals mapped by location.
-    private final Map<Location, Entity> field = new HashMap<>();
-    // The entity.
-    private final List<Entity> entity = new ArrayList<>();
+
+    private static final Random rand = Randomizer.getRandom(); // A random number generator for providing random locations.
+    private final int depth, width; // The dimensions of the field.
+    private final Map<Location, Entity> field = new HashMap<>(); // Animals mapped by location.
+    private final List<Entity> entity = new ArrayList<>(); // List of all entities in the field
 
     /**
      * Represent a field of the given dimensions.
      * @param depth The depth of the field.
      * @param width The width of the field.
      */
-    public Field(int depth, int width)
-    {
+    public Field(int depth, int width) {
         this.depth = depth;
         this.width = width;
     }
 
     /**
-     * Place an animal at the given location.
-     * If there is already an animal at the location it will
-     * be lost.
+     * Places an entity at the specified location in the field. If another entity already
+     * occupies that location, it is removed (replaced) by the new entity.
      * @param anEntity The entity to be placed.
-     * @param location Where to place the animal.
+     * @param location The location where the entity should be placed.
      */
-    public void placeEntity(Entity anEntity, Location location)
-    {
+    public void placeEntity(Entity anEntity, Location location) {
         assert location != null;
         Object other = field.get(location);
         if(other != null) {
-            entity.remove(other);
+            entity.remove(other); // Remove any existing entity at the location.
         }
-        field.put(location, anEntity);
-        entity.add(anEntity);
+        field.put(location, anEntity); // Place the new entity in the field.
+        entity.add(anEntity); // Add entity to list.
     }
-    
+
     /**
-     * Return the animal at the given location, if any.
-     * @param location Where in the field.
-     * @return The animal at the given location, or null if there is none.
+     * Returns the entity at the specified location in the field.
+     * @param location The location to check.
+     * @return The entity at the given location, or `null` if the location is empty.
      */
-    public Entity getEntityAt(Location location)
-    {
+    public Entity getEntityAt(Location location) {
         return field.get(location);
     }
 
@@ -62,8 +55,7 @@ public class Field {
      * @param location Get locations adjacent to this.
      * @return A list of free adjacent locations.
      */
-    public List<Location> getFreeAdjacentLocations(Location location)
-    {
+    public List<Location> getFreeAdjacentLocations(Location location) {
         List<Location> free = new LinkedList<>();
         List<Location> adjacent = getAdjacentLocations(location);
         for(Location next : adjacent) {
@@ -85,8 +77,7 @@ public class Field {
      * @param location The location from which to generate adjacencies.
      * @return A list of locations adjacent to that given.
      */
-    public List<Location> getAdjacentLocations(Location location)
-    {
+    public List<Location> getAdjacentLocations(Location location) {
         // The list of locations to be returned.
         List<Location> locations = new ArrayList<>();
         if(location != null) {
@@ -104,7 +95,7 @@ public class Field {
                     }
                 }
             }
-            
+
             // Shuffle the list. Several other methods rely on the list
             // being in a random order.
             Collections.shuffle(locations, rand);
@@ -113,65 +104,67 @@ public class Field {
     }
 
     /**
-     * Print out the number of foxes and rabbits in the field.
-     */
-    // In Field.java, replace the existing fieldStats() method with this updated version:
-    /**
-     * Print out the number of foxes and rabbits in the field, separated by gender.
+     * Prints out the current statistics of the field, including the number of each type of animal and plant.
+     * The output is formatted into tables for easy readability, displaying total counts as well as
+     * the number of males and females for each animal type.
      */
     public void fieldStats() {
-        int numWolfMales = 0, numWolfFemales = 0;
-        int numBobcatMales = 0, numBobcatFemales = 0;
-        int numSquirrelMales = 0, numSquirrelFemales = 0;
-        int numGrouseMales = 0, numGrouseFemales = 0;
-        int numSeeds = 0;
-        int numBerries = 0;
+        int numWolfMales = 0, numWolfFemales = 0;  // Counters for male and female wolves
+        int numBobcatMales = 0, numBobcatFemales = 0;  // Counters for male and female bobcats
+        int numSquirrelMales = 0, numSquirrelFemales = 0;  // Counters for male and female squirrels
+        int numGrouseMales = 0, numGrouseFemales = 0;  // Counters for male and female grouse
+        int numSeeds = 0;  // Counter for seeds
+        int numBerries = 0;  // Counter for berries
 
+        // Iterate through all entities in the field
         for (Entity anEntity : field.values()) {
-            if (anEntity.isAlive()) {
-                if (anEntity instanceof Wolf wolf) {
+            if (!anEntity.isAlive()) continue;
+
+            switch (anEntity) {
+                case Wolf wolf -> {
                     if (wolf.getGender() == Gender.MALE) {
                         numWolfMales++;
                     } else {
                         numWolfFemales++;
                     }
-                } else if (anEntity instanceof Bobcat bobcat) {
+                }
+                case Bobcat bobcat -> {
                     if (bobcat.getGender() == Gender.MALE) {
                         numBobcatMales++;
                     } else {
                         numBobcatFemales++;
                     }
-                } else if (anEntity instanceof Squirrel squirrel) {
+                }
+                case Squirrel squirrel -> {
                     if (squirrel.getGender() == Gender.MALE) {
                         numSquirrelMales++;
                     } else {
                         numSquirrelFemales++;
                     }
-                } else if (anEntity instanceof Grouse grouse) {
+                }
+                case Grouse grouse -> {
                     if (grouse.getGender() == Gender.MALE) {
                         numGrouseMales++;
                     } else {
                         numGrouseFemales++;
                     }
-                } else if (anEntity instanceof Seeds seeds) {
-                    numSeeds++;
-                } else if (anEntity instanceof Berries berries) {
-                    numBerries++;
-                } else {
-                    System.err.println("Warning: Unexpected entity type in field: " + anEntity.getClass().getSimpleName());
-
                 }
+                case Seeds seeds -> numSeeds++;
+                case Berries berries -> numBerries++;
+                default ->
+                    // Warn if an unexpected entity type is encountered
+                        System.err.println("Warning: Unexpected entity type in field: " + anEntity.getClass().getSimpleName());
             }
         }
 
-        String headerSeparator = "+-----------------+----------+--------+--------+\n";
-        String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n"; // Used for animals table
+        String headerSeparator = "+-----------------+----------+--------+--------+\n";  // Separator for the animal table
+        String rowFormat = "| %-15s | %-8s | %-6s | %-6s |\n"; // Format string for the animal table rows
 
         System.out.print(headerSeparator);
         System.out.printf("| %-15s | %-8s | %-6s | %-6s |\n", "Animal", "Total", "Male", "Female");
         System.out.print(headerSeparator);
 
-// Animals table
+        // Animals table
         System.out.printf(rowFormat, "Wolves", numWolfMales + numWolfFemales, numWolfMales, numWolfFemales);
         System.out.printf(rowFormat, "Bobcats", numBobcatMales + numBobcatFemales, numBobcatMales, numBobcatFemales);
         System.out.printf(rowFormat, "Squirrels", numSquirrelMales + numSquirrelFemales, numSquirrelMales, numSquirrelFemales);
@@ -179,9 +172,9 @@ public class Field {
 
         System.out.print(headerSeparator);
 
-// Plants table
-        String plantHeaderSeparator = "+-----------------+----------+\n"; // 2 columns
-        String plantRowFormat = "| %-15s | %-8d |\n"; // Only 2 placeholders
+        // Plants table
+        String plantHeaderSeparator = "+-----------------+----------+\n"; // Separator for the plants table
+        String plantRowFormat = "| %-15s | %-8d |\n"; // Format string for the plant table rows
 
         System.out.print(plantHeaderSeparator);
         System.out.printf("| %-15s | %-8s |\n", "Plant", "Total");
@@ -189,51 +182,51 @@ public class Field {
         System.out.printf(plantRowFormat, "Seeds", numSeeds);
         System.out.printf(plantRowFormat, "Berries", numBerries);
         System.out.print(plantHeaderSeparator);
-
     }
 
     /**
      * Empty the field.
      */
-    public void clear()
-    {
+    public void clear() {
         field.clear();
     }
 
     /**
-     * Return whether there is at least one rabbit and one fox in the field.
-     * @return true if there is at least one rabbit and one fox in the field.
+     * Checks if the field contains at least one living animal
+     * This method is used to determine if the ecosystem in the field is still viable in terms of having all necessary animal types.
+     * The method iterates through a list of entities present in the field and sets boolean flags if each animal type is found.
+     *
+     * @return true if there is at least one living Wolf, Bobcat, Squirrel, and Grouse in the field; false otherwise.
+     *         Returns false if the field is empty or if none of the animal types are present.
      */
     public boolean isViable() {
-        boolean rabbitFound = false;
-        boolean foxFound = false;
-        boolean wolfFound = false;
-        boolean bobcatFound = false;
-        boolean squirrelFound = false;
-        boolean grouseFound = false;
+        boolean wolfFound = false;      // Flag to indicate if a wolf has been found.  Initialise to false.
+        boolean bobcatFound = false;    // Flag to indicate if a bobcat has been found.  Initialise to false.
+        boolean squirrelFound = false;  // Flag to indicate if a squirrel has been found. Initialise to false.
+        boolean grouseFound = false;    // Flag to indicate if a grouse has been found.   Initialise to false.
 
+        // Iterate through the entities list to find at least one of each animal
         Iterator<Entity> it = entity.iterator(); // Use the class's 'entities' list
-        while (it.hasNext() && !(wolfFound && bobcatFound && squirrelFound && grouseFound)) {
+        while (it.hasNext() && !(wolfFound && bobcatFound && squirrelFound && grouseFound)) { // Stop if all animals have been found
             Entity anEntity = it.next();
 
             if (anEntity instanceof Wolf wolf && wolf.isAlive()) {
-                wolfFound = true;
+                wolfFound = true; // Set flag to true if a living wolf is found
             } else if (anEntity instanceof Bobcat bobcat && bobcat.isAlive()) {
-                bobcatFound = true;
+                bobcatFound = true; // Set flag to true if a living bobcat is found
             } else if (anEntity instanceof Squirrel squirrel && squirrel.isAlive()) {
-                squirrelFound = true;
+                squirrelFound = true; // Set flag to true if a living squirrel is found
             } else if (anEntity instanceof Grouse grouse && grouse.isAlive()) {
-                grouseFound = true;
+                grouseFound = true; // Set flag to true if a living grouse is found
             }
         }
-        return wolfFound && bobcatFound && squirrelFound && grouseFound;
+        return wolfFound && bobcatFound && squirrelFound && grouseFound; // Return true only if all animal types have been found alive
     }
     
     /**
      * Get the list of entity.
      */
-    public List<Entity> getAnimals()
-    {
+    public List<Entity> getEntities() {
         return entity;
     }
 
@@ -241,8 +234,7 @@ public class Field {
      * Return the depth of the field.
      * @return The depth of the field.
      */
-    public int getDepth()
-    {
+    public int getDepth() {
         return depth;
     }
     
@@ -250,8 +242,7 @@ public class Field {
      * Return the width of the field.
      * @return The width of the field.
      */
-    public int getWidth()
-    {
+    public int getWidth() {
         return width;
     }
 }

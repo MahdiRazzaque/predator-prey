@@ -1,19 +1,18 @@
 import java.util.*;
 
 /**
- * A simple predator-prey simulator, based on a rectangular field containing 
- * rabbits and foxes.
- * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.1
+ * A simple predator-prey simulator, based on a rectangular field containing
+ * various entities such as wolves, bobcats, squirrels, grouse, seeds, and berries.
+ * The simulation models the interactions between these entities over time.
+ *
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque
+ * @version 10.02.2025
  */
 public class Simulator
 {
     // Constants representing configuration information for the simulation.
-    // The default width for the grid.
-    private static final int DEFAULT_WIDTH = 120;
-    // The default depth of the grid.
-    private static final int DEFAULT_DEPTH = 80;
+    private static final int DEFAULT_WIDTH = 120; // The default width of the simulation grid.
+    private static final int DEFAULT_DEPTH = 80;  // The default depth of the simulation grid.
 
     private static final double WOLF_CREATION_PROBABILITY = 0.005;
     private static final double BOBCAT_CREATION_PROBABILITY = 0.02;
@@ -23,21 +22,19 @@ public class Simulator
     private static final double BERRIES_CREATION_PROBABILITY = 0.05;
 
 
-    // The current state of the field.
-    private Field field;
-    // The current step of the simulation.
-    private int step;
-    // A graphical view of the simulation.
-    private final SimulatorView view;
-
-    private Time time;
+    private Field field; // Represents the current state of the simulation field, containing all entities.
+    private int step; // Represents the current simulation step or iteration.
+    private final SimulatorView view; // Provides a graphical representation of the simulation.
+    private Time time; // Represents the current time in the simulation.
 
     /**
-     * Construct a simulation field with default size.
+     * Constructs a simulation with default dimensions.
+     * This constructor initialises the simulation field with a default depth and width,
+     * and sets the initial time to 17:00 with a time step of 10 minutes.
      */
     public Simulator() {
-        this(DEFAULT_DEPTH, DEFAULT_WIDTH);
-        time = new Time(17,0,0, 10);
+        this(DEFAULT_DEPTH, DEFAULT_WIDTH); // Initialise the field with default depth and width.
+        time = new Time(17,0,0, 10); // Set the initial time to 17:00 with a time step of 10 minutes.
     }
     
     /**
@@ -61,8 +58,13 @@ public class Simulator
         reset();
     }
 
+    /**
+     * Returns the current time of the simulation.
+     *
+     * @return The current Time object representing the simulation time.
+     */
     public Time getTime() {
-        return time;
+        return time; // Return the current time.
     }
     
     /**
@@ -99,7 +101,7 @@ public class Simulator
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
 
-        List<Entity> entities = field.getAnimals();
+        List<Entity> entities = field.getEntities();
         for (Entity anEntity : entities) {
             anEntity.act(field, nextFieldState);
         }
@@ -114,8 +116,7 @@ public class Simulator
     /**
      * Reset the simulation to a starting position.
      */
-    public void reset()
-    {
+    public void reset() {
         step = 0;
         populate();
         view.showStatus(step, field);
@@ -156,8 +157,6 @@ public class Simulator
             }
         }
     }
-
-
 
     /**
      * Report on the number of each type of animal in the field.

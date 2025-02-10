@@ -4,14 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A graphical view of the simulation grid.
- * The view displays a colored rectangle for each location 
- * representing its contents. It uses a default background color.
- * Colors for each type of species can be defined using the
- * setColor method.
- * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.0
+ * A graphical view of the simulation grid, displaying the contents of the field.
+ * Each location in the field is represented by a coloured rectangle, with colours
+ * assigned to different entity types. The view also displays simulation statistics
+ * such as the current step, population details, and time.
+ *
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque
+ * @version 10.02.2025
  */
 public class SimulatorView extends JFrame {
 
@@ -57,8 +56,6 @@ public class SimulatorView extends JFrame {
         setColor(Seeds.class, new Color(0, 0, 128));   // Blue for Seeds
         setColor(Berries.class, new Color(255, 0, 0)); // Red for Berries
 
-
-
         setTitle("Predator and Prey Simulation");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
@@ -72,7 +69,6 @@ public class SimulatorView extends JFrame {
         JLabel dividerLabel1 = new JLabel(" | ");
         JLabel dividerLabel2 = new JLabel(" | ");
         JLabel dividerLabel3 = new JLabel(" | ");
-
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));

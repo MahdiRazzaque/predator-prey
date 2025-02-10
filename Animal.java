@@ -3,19 +3,42 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Abstract class representing an animal within the simulation. Extends the `Entity` class,
+ * adding animal-specific attributes like age, breeding, food level, and movement.
+ * Animal classes should inherit from this class.
+ *
+ * @author Mahdi Razzaque
+ * @version 10.02.2025
+ */
 public class Animal extends Entity {
-    protected int BREEDING_AGE;
-    protected int MAX_AGE;
-    protected double BREEDING_PROBABILITY;
-    protected int MAX_LITTER_SIZE;
-    protected HashMap<String, Integer> FOOD_SOURCES;
-    protected static final Random rand = Randomizer.getRandom();
-    protected final Class<? extends Animal> SPECIES;
-    protected Gender gender;
+    protected int BREEDING_AGE; // The minimum age for an animal to breed.
+    protected int MAX_AGE; // The maximum age an animal can reach.
+    protected double BREEDING_PROBABILITY; // The likelihood of breeding in a given step (0.0 - 1.0).
+    protected int MAX_LITTER_SIZE; // The maximum number of offspring in a single birth.
+    protected HashMap<String, Integer> FOOD_SOURCES; // Map of food source names to their nutritional values.
+    protected static final Random rand = Randomizer.getRandom(); // Random number generator for the simulation.
+    protected final Class<? extends Animal> SPECIES; // The specific species of this animal.
+    protected Gender gender; // The gender of the animal (MALE or FEMALE).
 
-    protected int age;
-    protected int foodLevel;
+    protected int age; // The current age of the animal (in simulation steps).
+    protected int foodLevel; // The current food level of the animal.
 
+    /**
+     * Constructor for the Animal class. Creates a new animal with the specified parameters,
+     * including its age, location, breeding characteristics, food sources, species, and gender.
+     * The initial food level is set based on the provided food sources.
+     * @param randomAge If true, the animal's age is randomly set; otherwise, it starts at 0.
+     * @param location The animal's initial location on the field.
+     * @param breedingAge The minimum age at which the animal can breed.
+     * @param maxAge The maximum age the animal can live to.
+     * @param breedingProbability The probability of the animal breeding in a given time step.
+     * @param maxLitterSize The maximum number of offspring the animal can have at once.
+     * @param foodSources A HashMap containing the animal's food sources and their nutritional values.
+     * @param species The Class object representing the animal's species.
+     * @param gender The animal's gender.
+     * @param simulator The simulator instance managing this animal.
+     */
     public Animal(boolean randomAge,
                   Location location,
                   int breedingAge,
@@ -43,24 +66,28 @@ public class Animal extends Entity {
         else {
             age = 0;
         }
-        
-        // Initialize food level based on food sources
+
+        // Initialise food level based on food sources.
         this.foodLevel = 0;
         if (FOOD_SOURCES != null && !FOOD_SOURCES.isEmpty()) {
-            this.foodLevel = FOOD_SOURCES.values().iterator().next();
+            this.foodLevel = FOOD_SOURCES.values().iterator().next(); // Get the first food source's value.
         }
     }
 
+    /**
+     * Returns the gender of the animal.
+     * @return The animal's gender (MALE or FEMALE).
+     */
     protected Gender getGender() {
         return gender;
     }
 
     /**
-     * This is what the fox does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
-     * or die of old age.
-     * @param currentField The field currently occupied.
-     * @param nextFieldState The updated field.
+     * Simulates one step of the animal's actions.  This includes incrementing age, decreasing food level,
+     * potentially giving birth, finding food, moving, and possibly dying (either from hunger, old age, or
+     * if it cannot move).
+     * @param currentField The current state of the simulation field.
+     * @param nextFieldState The field representing the next state of the simulation, being built up.
      */
     protected void act(Field currentField, Field nextFieldState) {
         incrementAge();
@@ -68,13 +95,14 @@ public class Animal extends Entity {
             decreaseFoodLevel();
         }
 
-        if(!isAlive())
-            return;
+        if(!isAlive()) {
+            return; // Don't act if the animal is already dead.
+        }
 
         List<Location> freeLocations =
                 nextFieldState.getFreeAdjacentLocations(getLocation());
         if(! freeLocations.isEmpty()) {
-            giveBirth(nextFieldState, freeLocations, currentField);
+            giveBirth(nextFieldState, freeLocations, currentField); // Pass currentField for breeding checks
         }
         // Move towards a source of food if found.
         Location nextLocation = findFood(currentField);
@@ -87,38 +115,42 @@ public class Animal extends Entity {
             setLocation(nextLocation);
             nextFieldState.placeEntity(this, nextLocation);
         } else {
+            // Could not move (no free locations and no food found).
             setDead();
         }
     }
 
     /**
-     * Increase the age. This could result in the fox's death.
+     * Increments the animal's age by one simulation step. If the animal exceeds its maximum age, it dies.
      */
     protected void incrementAge() {
         age++;
         if(age > MAX_AGE) {
-            setDead();
+            setDead(); // The animal dies of old age.
         }
     }
 
     /**
-     * Make this fox more hungry. This could result in the fox's death.
+     * Decreases the animal's food level, simulating hunger. If the food level reaches zero or below,
+     * the animal dies of starvation.
      */
     protected void decreaseFoodLevel() {
         foodLevel--;
         if(foodLevel <= 0) {
-            setDead();
+            setDead(); // The animal dies of starvation.
         }
     }
 
     /**
-     * Look for rabbits adjacent to the current location.
-     * Only the first live rabbit is eaten.
-     * @param field The field currently occupied.
-     * @return Where food was found, or null if it wasn't.
+     * Searches for food in adjacent locations. The animal will consume the first valid food source found,
+     * increasing its food level accordingly.
+     * @param field The current state of the simulation field.
+     * @return The location of the food source if found, `null` otherwise.
      */
     protected Location findFood(Field field) {
-        if(FOOD_SOURCES.isEmpty()) return null;
+        if(FOOD_SOURCES.isEmpty()) {
+            return null; // Return null if the animal has no food sources.
+        }
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         Location foodLocation = null;
@@ -127,11 +159,10 @@ public class Animal extends Entity {
             Entity entity = field.getEntityAt(loc);
             for(String foodSource : FOOD_SOURCES.keySet()) {
                 if(entity != null && foodSource.equals(entity.getClass().getSimpleName())) {
-                    // System.out.println(this.getClass().getSimpleName() + " ate " + entity.getClass().getSimpleName());
-                    entity.setDead();
-                    foodLevel = FOOD_SOURCES.get(foodSource);
-                    foodLocation = loc;
-                    break;
+                    entity.setDead(); // The food source (entity) is consumed.
+                    foodLevel = FOOD_SOURCES.get(foodSource); // Increase food level.
+                    foodLocation = loc; // Record the location of the food.
+                    break; // Stop searching after finding the first food source.
                 }
             }
         }
@@ -139,12 +170,14 @@ public class Animal extends Entity {
     }
 
     /**
-     * Check whether this fox is to give birth at this step.
-     * New births will be made into free adjacent locations.
-     * @param freeLocations The locations that are free in the current field.
+     * Attempts to give birth to new animals of the same species. Births occur in free adjacent
+     * locations, up to the maximum litter size, and are dependent on the result of the `breed` method.
+     * @param nextFieldState The field representing the next state of the simulation.
+     * @param freeLocations A list of free adjacent locations where offspring can be placed.
+     * @param currentField The current state of the simulation field.
      */
     protected void giveBirth(Field nextFieldState, List<Location> freeLocations, Field currentField) { // Modify giveBirth to accept currentField
-        int births = breed(currentField);
+        int births = breed(currentField); // Determine the number of births.
         if(births > 0) {
             for(int b = 0; b < births && !freeLocations.isEmpty(); b++) {
                 Location loc = freeLocations.remove(0);
@@ -161,9 +194,10 @@ public class Animal extends Entity {
     }
 
     /**
-     * Generate a number representing the number of births,
-     * if it can breed.
-     * @return The number of births (may be zero).
+     * Determines the number of offspring an animal will produce in the current time step, based on
+     * its ability to breed and a random probability.
+     * @param field The current state of the simulation field.
+     * @return The number of births (0 if the animal cannot breed or the probability check fails).
      */
     protected int breed(Field field) {
         int births = 0;
@@ -174,7 +208,10 @@ public class Animal extends Entity {
     }
 
     /**
-     * A fox can breed if it has reached the breeding age.
+     * Determines if the animal can breed in the current step.  An animal can breed if it has reached
+     * breeding age and there is a suitable mate of the opposite gender in an adjacent location.
+     * @param field The current state of the simulation field.
+     * @return `true` if the animal can breed, `false` otherwise.
      */
     protected boolean canBreed(Field field) {
         if (age >= BREEDING_AGE) {
@@ -185,10 +222,10 @@ public class Animal extends Entity {
                         neighbor.getClass() == this.getClass() &&
                         ((Animal) neighbor).getGender() != this.gender &&
                         neighbor.isAlive()) {
-                    return true; // Found a suitable mate
+                    return true; // Found a suitable mate.
                 }
             }
         }
-        return false; // No mate found or not old enough
+        return false; // No mate found or not old enough.
     }
 }
