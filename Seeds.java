@@ -7,7 +7,7 @@ public class Seeds extends Plant {
     private static final int GROWTH_START_HOUR = 6;
     private static final int GROWTH_END_HOUR = 18;
     private static final int GROWTH_STAGE = 0;
-    
+
     public Seeds(Location location, Simulator simulator, Time time) {
         super(NAME, GROWTH_RATE, REPRODUCTION_RATE, LIFE_SPAN, SPREAD_RATE, GROWTH_START_HOUR, GROWTH_END_HOUR, GROWTH_STAGE, location, simulator, time, Seeds.class);
         }
