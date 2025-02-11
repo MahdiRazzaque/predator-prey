@@ -26,6 +26,7 @@ public class Simulator
     private int step; // Represents the current simulation step or iteration.
     private final SimulatorView view; // Provides a graphical representation of the simulation.
     private Time time; // Represents the current time in the simulation.
+    private Weather weather;
 
     /**
      * Constructs a simulation with default dimensions.
@@ -51,6 +52,7 @@ public class Simulator
         }
 
         time = new Time();
+        weather = new Weather();
         
         field = new Field(depth, width);
         view = new SimulatorView(depth, width, this);
@@ -65,6 +67,10 @@ public class Simulator
      */
     public Time getTime() {
         return time; // Return the current time.
+    }
+
+    public Weather getWeather() {
+        return weather;
     }
     
     /**

@@ -27,11 +27,14 @@ public class SimulatorView extends JFrame {
     private final JLabel population;
     private final FieldView fieldView;
 
-    private final String TIME_PREFIX = "Time: ";
-    private final JLabel timeLabel;
     private final String DAY_PREFIX = "Days: ";
     private final JLabel daysLabel;
+    private final String TIME_PREFIX = "Time: ";
+    private final JLabel timeLabel;
+    private final String DAY_OR_NIGHT_PREFIX = "Day/Night";
     private final JLabel dayOrNightLabel;
+    private final String WEATHER_PREFIX = "Weather: ";
+    private final JLabel weatherLabel;
 
     // A map for storing colors for participants in the simulation
     private final Map<Class<?>, Color> colors;
@@ -65,20 +68,21 @@ public class SimulatorView extends JFrame {
         fieldView = new FieldView(height, width);
         timeLabel = new JLabel(TIME_PREFIX);
         daysLabel = new JLabel(DAY_PREFIX);
-        dayOrNightLabel = new JLabel("Day/Night");
-        JLabel dividerLabel1 = new JLabel(" | ");
-        JLabel dividerLabel2 = new JLabel(" | ");
-        JLabel dividerLabel3 = new JLabel(" | ");
+        dayOrNightLabel = new JLabel(DAY_OR_NIGHT_PREFIX);
+        weatherLabel = new JLabel(WEATHER_PREFIX);
 
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         northPanel.add(daysLabel);
-        northPanel.add(dividerLabel1);
+        northPanel.add(new JLabel(" | "));
         northPanel.add(timeLabel);
-        northPanel.add(dividerLabel2);
+        northPanel.add(new JLabel(" | "));
         northPanel.add(stepLabel);
-        northPanel.add(dividerLabel3);
+        northPanel.add(new JLabel(" | "));
         northPanel.add(dayOrNightLabel);
+        northPanel.add(new JLabel(" | "));
+        northPanel.add(weatherLabel);
+
 
         Container contents = getContentPane();
         contents.add(northPanel, BorderLayout.NORTH);
@@ -127,6 +131,7 @@ public class SimulatorView extends JFrame {
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + simulator.getTime().getFormattedTime());
         dayOrNightLabel.setText(simulator.getTime().isDay() ? "Day ☀️" : "Night 🌙");
+        weatherLabel.setText(simulator.getWeather().getWeatherTextAndEmoji());
 
         stats.reset();
         
