@@ -4,18 +4,86 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 public class Weather {
-
+    private final Random random = new Random();
     private static final String API_URL = "http://api.weatherapi.com/v1/current.json";
     private final String apiKey;
     private final String location = "London";
 
-    public Weather() {
+    private Simulator simulator;
+    private int lastStepUpdated = 0;
+    private final int stepIntervalUpdate = 5;
+    private String currentWeatherText;
+    private String currentWeatherEmoji;
+
+    public Weather(Simulator simulator) {
         this.apiKey = "14119c62d6b340b6a20143053251102";
+        this.simulator = simulator;
     }
 
-    public String fetchWeatherData() throws Exception {
+    public String getWeatherText() {
+        if(!isEnoughStepsPassed()) {
+            return currentWeatherText;
+        }
+
+        try {
+            String weatherData = fetchWeatherData();
+
+            if (!isValidResponse(weatherData)) {
+                getRandomWeather();
+                return currentWeatherText;
+            }
+
+
+            currentWeatherText = mapConditionTextToWeatherType(getWeatherDescription(weatherData));
+            return currentWeatherText;
+
+        } catch (Exception e) {
+            getRandomWeather();
+            return currentWeatherText;
+        }
+    }
+
+    public String getWeatherEmoji() {
+        if(!isEnoughStepsPassed())
+            return currentWeatherEmoji;
+
+        currentWeatherEmoji = mapWeatherTextToWeatherEmoji(currentWeatherText);
+
+        if(currentWeatherEmoji.equals("Unknown"))
+            getRandomWeather();
+
+        return currentWeatherEmoji;
+    }
+
+    public String getWeatherTextAndEmoji() {
+        return getWeatherText() + " " + getWeatherEmoji();
+    }
+
+    public void getRandomWeather() {
+        if(!isEnoughStepsPassed())
+            return;
+
+        String[] weatherTexts = {"Sunny", "Rainy", "Snowy", "Cloudy"};
+
+        currentWeatherText = weatherTexts[random.nextInt(weatherTexts.length)];
+        currentWeatherEmoji = mapWeatherTextToWeatherEmoji(currentWeatherText);
+    }
+
+    private boolean isEnoughStepsPassed() {
+        int step = simulator.getStep();
+        System.out.println("Steps in weather: " + step);
+        if(step < lastStepUpdated)
+            return false;
+
+        lastStepUpdated = step;
+
+        return step % stepIntervalUpdate == 0;
+    }
+
+    private String fetchWeatherData() throws Exception {
         String encodedLocation = URLEncoder.encode(location, StandardCharsets.UTF_8.toString());
         String urlString = String.format("%s?key=%s&q=%s", API_URL, apiKey, encodedLocation);
 
@@ -43,11 +111,11 @@ public class Weather {
         return response.toString();
     }
 
-    public boolean isValidResponse(String response) {
+    private boolean isValidResponse(String response) {
         return !response.contains("\"error\":");
     }
 
-    public String getWeatherDescription(String jsonData) {
+    private String getWeatherDescription(String jsonData) {
         try {
             // Find the "text" key
             String textKey = "\"text\":\"";
@@ -74,41 +142,7 @@ public class Weather {
         }
     }
 
-    public String getWeatherText() {
-        try {
-            String weatherData = fetchWeatherData();
-
-            if (!isValidResponse(weatherData))
-                return "Invalid API response.";
-
-            return mapConditionTextToWeatherType(getWeatherDescription(weatherData)); // map it!
-
-        } catch (Exception e) {
-            return "An error occurred: " + e.getMessage();
-        }
-    }
-
-    public String getWeatherEmoji() {
-        try {
-            String weatherData = fetchWeatherData();
-
-            if (!isValidResponse(weatherData))
-                return "";
-
-            String conditionText = getWeatherDescription(weatherData);
-
-            return mapConditionTextToWeatherEmoji(conditionText);
-
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getWeatherTextAndEmoji() {
-        return getWeatherText() + " " + getWeatherEmoji();
-    }
-
-    public String mapConditionTextToWeatherType(String conditionText) {
+    private String mapConditionTextToWeatherType(String conditionText) {
         String lowerCaseDescription = conditionText.toLowerCase();
         if (lowerCaseDescription.contains("sunny") || lowerCaseDescription.contains("clear")) {
             return "Sunny";
@@ -123,18 +157,13 @@ public class Weather {
         }
     }
 
-    private String mapConditionTextToWeatherEmoji(String conditionText) {
-        String lowerCaseDescription = conditionText.toLowerCase();
-        if (lowerCaseDescription.contains("sunny") || lowerCaseDescription.contains("clear")) {
-            return "☀️";
-        } else if (lowerCaseDescription.contains("rain") || lowerCaseDescription.contains("drizzle") || lowerCaseDescription.contains("torrential")) {
-            return "🌧️";
-        } else if (lowerCaseDescription.contains("snow") || lowerCaseDescription.contains("sleet") || lowerCaseDescription.contains("ice") || lowerCaseDescription.contains("blizzard")) {
-            return "❄️";
-        } else if (lowerCaseDescription.contains("cloud") || lowerCaseDescription.contains("overcast") || lowerCaseDescription.contains("mist") || lowerCaseDescription.contains("fog")) {
-            return "☁️";
-        } else {
-            return "";
-        }
+    private String mapWeatherTextToWeatherEmoji(String weatherText) {
+        return switch (weatherText) {
+            case "Sunny" -> "☀️";
+            case "Rainy" -> "🌧️";
+            case "Snowy" -> "❄️";
+            case "Cloudy" -> "☁️";
+            default -> "Unknown";
+        };
     }
 }

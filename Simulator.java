@@ -52,7 +52,7 @@ public class Simulator
         }
 
         time = new Time();
-        weather = new Weather();
+        weather = new Weather(this);
         
         field = new Field(depth, width);
         view = new SimulatorView(depth, width, this);
@@ -71,6 +71,10 @@ public class Simulator
 
     public Weather getWeather() {
         return weather;
+    }
+
+    public int getStep() {
+        return step;
     }
     
     /**
