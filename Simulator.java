@@ -26,7 +26,7 @@ public class Simulator
     private int step; // Represents the current simulation step or iteration.
     private final SimulatorView view; // Provides a graphical representation of the simulation.
     private Time time; // Represents the current time in the simulation.
-    private Weather weather;
+    private Weather weather; // Represents the current weather conditions in the simulation.
 
     /**
      * Constructs a simulation with default dimensions.
@@ -69,12 +69,20 @@ public class Simulator
         return time; // Return the current time.
     }
 
+    /**
+     * Returns the current Weather object.
+     * @return The current Weather object.
+     */
     public Weather getWeather() {
-        return weather;
+        return weather; // Returns the current Weather object.
     }
 
+    /**
+     * Returns the current simulation step.
+     * @return The current simulation step.
+     */
     public int getStep() {
-        return step;
+        return step; // Returns the current simulation step.
     }
     
     /**
@@ -91,8 +99,7 @@ public class Simulator
      * Stop before the given number of steps if it ceases to be viable.
      * @param numSteps The number of steps to run for.
      */
-    public void simulate(int numSteps)
-    {
+    public void simulate(int numSteps) {
         reportStats();
         for(int n = 1; n <= numSteps && field.isViable(); n++) {
             simulateOneStep();
