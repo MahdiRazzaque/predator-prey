@@ -1,17 +1,17 @@
 import java.util.List;
 
 public class Plant extends Entity{
-    private final String name;
-    private final int growthRate;
-    private final int reproductionRate;
-    private final int lifespan;
-    private final int spreadRate;
-    private int age;
-    private final int growthStartHour;
-    private final int growthEndHour;
-    private int growthStage;
+    protected final String name;
+    protected final int growthRate;
+    protected final int reproductionRate;
+    protected final int lifespan;
+    protected final int spreadRate;
+    protected int age;
+    protected final int growthStartHour;
+    protected final int growthEndHour;
+    protected int growthStage;
     protected final Class<? extends Plant> PLANT_TYPE;
-    private Time time;
+    protected Time time;
 
     public Plant(String name,
                  int growthRate,
@@ -83,7 +83,7 @@ public class Plant extends Entity{
     /**
      * Determines if the plant can grow at the current time
      */
-    private boolean canGrow() {
+    protected boolean canGrow() {
         int currentHour = time.getHour();
         if (growthStartHour < currentHour) {
             return currentHour >= growthStartHour && currentHour < growthEndHour;
