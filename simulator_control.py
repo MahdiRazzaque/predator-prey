@@ -98,7 +98,7 @@ def run_simulation():
         print(f"Java simulation failed! Error:\n{e.stderr}")
         return None, None
 
-GEMINI_API_KEY = 'AIzaSyDqH8wzPhEnFbD4WymeYWB97uD9Emusnuk' # <-----  API KEY HARDCODED HERE!
+GEMINI_API_KEY = ''
 genai.configure(api_key=GEMINI_API_KEY)
 generation_config = genai.GenerationConfig(
     temperature=0.7
