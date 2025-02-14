@@ -98,7 +98,13 @@ def run_simulation():
         print(f"Java simulation failed! Error:\n{e.stderr}")
         return None, None
 
-GEMINI_API_KEY = ''
+GEMINI_API_KEY_ENV_VAR = "GEMINI_API_KEY" # Name of the environment variable for API key
+GEMINI_API_KEY = os.environ.get(GEMINI_API_KEY_ENV_VAR) # Load API key from environment variable
+if not GEMINI_API_KEY: # Check if API key is missing
+    print(f"Error: Required environment variable '{GEMINI_API_KEY_ENV_VAR}' not set.")
+    print("Please set your Gemini API key as an environment variable and run the script again.")
+    exit(1) # Exit with an error code if API key is not found
+
 genai.configure(api_key=GEMINI_API_KEY)
 generation_config = genai.GenerationConfig(
     temperature=0.7
