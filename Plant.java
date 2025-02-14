@@ -65,7 +65,7 @@ public class Plant extends Entity{
         }
 
         //Spread to new locations at the spread rate interval
-        if (age % spreadRate == 0) {
+        if (spreadRate > 0 && age % spreadRate == 0) {
             spread (currentField, nextFieldState);
         }
 
