@@ -24,6 +24,9 @@ public class Animal extends Entity {
     protected int age; // The current age of the animal (in simulation steps).
     protected int foodLevel; // The current food level of the animal.
 
+    protected Disease disease;  // The disease the animal is infected with
+    protected int timeInfected; // Number of steps the animal has been infected
+
     /**
      * Constructor for the Animal class. Creates a new animal with the specified parameters,
      * including its age, location, breeding characteristics, food sources, species, and gender.
@@ -49,6 +52,7 @@ public class Animal extends Entity {
                   Class<? extends Animal> species,
                   Gender gender,
                   Simulator simulator
+
     ) {
         super(location, simulator);
 
@@ -91,6 +95,12 @@ public class Animal extends Entity {
      */
     protected void act(Field currentField, Field nextFieldState) {
         incrementAge();
+
+        handleDisease(); // Handle disease progression or death
+        if (!isAlive()) return; //Don't act if the animal is already dead
+
+        spreadDisease(currentField); // Attempt to spread disease
+
         if (!FOOD_SOURCES.isEmpty()) {
             decreaseFoodLevel();
         }
@@ -119,6 +129,53 @@ public class Animal extends Entity {
             setDead();
         }
     }
+
+    /**
+     * Infect the animal with a disease.
+     */
+    public void infect(Disease newDisease) {
+        if (disease == null) {  // Only get infected if currently healthy
+            this.disease = newDisease;
+            this.timeInfected = 0;
+        }
+    }
+
+    /**
+     * Handles disease progression, recovery, or death.
+     */
+    protected void handleDisease() {
+        if (disease != null) {
+            timeInfected++;
+
+            // Check if the animal recovers
+            if (disease.isCured(timeInfected)) {
+                disease = null; // The animal recovers
+                return;
+            }
+
+            // If the disease is lethal and the duration is reached, the animal dies
+            if (disease.isLethal() && timeInfected >= disease.infectionDuration) {
+                setDead();
+            }
+        }
+    }
+
+    /**
+     * Spreads disease to adjacent animals.
+     */
+    protected void spreadDisease(Field field) {
+        if (disease != null) {
+            for (Location loc : field.getAdjacentLocations(getLocation())) {
+                Entity entity = field.getEntityAt(loc);
+                if (entity instanceof Animal otherAnimal && otherAnimal.disease == null) {
+                    if (disease.spreads()) {
+                        otherAnimal.infect(disease);
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * Increments the animal's age by one simulation step. If the animal exceeds its maximum age, it dies.

@@ -159,6 +159,8 @@ public class Simulator
         Random rand = Randomizer.getRandom();
         field.clear();
 
+        double DISEASE_PROBABILITY = 0.05; // 5% chance an animal starts infected
+
         for (int row = 0; row < field.getDepth(); row++) {
             for (int col = 0; col < field.getWidth(); col++) {
                 Location location = new Location(row, col);
@@ -166,9 +168,15 @@ public class Simulator
 
                 if (rand.nextDouble() <= WOLF_CREATION_PROBABILITY) {
                     Wolf wolf = new Wolf(true, location, gender, this);
+                    if (rand.nextDouble() < DISEASE_PROBABILITY) {
+                        wolf.infect(new Flu());
+                    }// Randomly start some wolves with Flu
                     field.placeEntity(wolf, location);
                 } else if (rand.nextDouble() <= BOBCAT_CREATION_PROBABILITY) {
                     Bobcat bobcat = new Bobcat(true, location, gender, this);
+                        if (rand.nextDouble() < DISEASE_PROBABILITY) {
+                            bobcat.infect(new Rabies());
+                        }// Randomly start some Bobcats with Rabies
                     field.placeEntity(bobcat, location);
                 } else if (rand.nextDouble() <= SQUIRREL_CREATION_PROBABILITY) {
                     Squirrel squirrel = new Squirrel(true, location, gender, this);
