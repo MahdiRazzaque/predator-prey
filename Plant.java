@@ -64,10 +64,6 @@ public class Plant extends Entity{
             reproduce(currentField, nextFieldState);
         }
 
-        //Spread to new locations at the spread rate interval
-        if (spreadRate > 0 && age % spreadRate == 0) {
-            spread (currentField, nextFieldState);
-        }
 
         //Plants remain in same location
         nextFieldState.placeEntity(this, getLocation());
@@ -93,13 +89,16 @@ public class Plant extends Entity{
         }
     }
 
-    /**
-     * Attempts to spread the plant to nearby empty locations
-     */
-    private void spread(Field currentField, Field nextFieldState) {
-        List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
 
-        if (!freeLocations.isEmpty()) {
+
+    /**
+     * Attempts to reproduce by creating new plants in available locations
+     */
+    private void reproduce(Field currentField, Field nextFieldState) {
+        List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
+        int spreadCount = Math.min(freeLocations.size(), spreadRate); // Ensure we don't exceed available free locations
+
+        for (int i = 0; i < spreadCount; i++) {
             Location newLocation = freeLocations.remove(0);
             try {
                 Plant newPlant = PLANT_TYPE.getDeclaredConstructor(Location.class, Simulator.class, Time.class)
@@ -111,22 +110,6 @@ public class Plant extends Entity{
         }
     }
 
-    /**
-     * Attempts to reproduce by creating new plants in available locations
-     */
-    private void reproduce(Field currentField, Field nextFieldState) {
-        List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
-
-        for (Location location : freeLocations) {
-            try {
-                Plant newPlant = PLANT_TYPE.getDeclaredConstructor(Location.class, Simulator.class, Time.class)
-                        .newInstance(location, simulator, time);
-                nextFieldState.placeEntity(newPlant, location);
-            } catch (Exception e) {
-                System.err.println("Failed to create new " + PLANT_TYPE.getSimpleName());
-            }
-        }
-    }
 
     /**
      * Returns name of plant

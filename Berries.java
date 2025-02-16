@@ -1,7 +1,7 @@
 public class Berries extends Plant {
     private static final String NAME = "Berries";
     private static final int GROWTH_RATE = 15;
-    private static final int REPRODUCTION_RATE = 50;
+    private static final int REPRODUCTION_RATE = 5;
     private static final int LIFE_SPAN = 250;
     private static final int SPREAD_RATE = 1;
     private static final int GROWTH_START_HOUR = 18;
