@@ -1,0 +1,116 @@
+\documentclass{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Assignment 3: Predator-Prey Simulation - Report}
+\author{
+    Mahdi Razzaque | K24033150
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Simulation Description}
+
+My simulation models a basic ecosystem within a rectangular field. It contains several acting species, including predators (wolves and bobcats) and prey (squirrels and grouse), as well as plant life (seeds and berries). These entities interact based on rules governing breeding, feeding, and survival. The simulation is visualised through a graphical interface that displays the current state of the field, weather, and time, and provides statistical information.
+
+\section{Core Tasks}
+
+\subsection{Species and Predation}
+
+I introduced five distinct acting species into the simulation: wolves, bobcats, squirrels, grouse, and plants (seeds and berries). Instead of simply copying and pasting code from the original template project, I attempted a significant refactoring effort. Realising that most of the code for predator and prey species was fundamentally similar, I identified common behaviours and combined them into the superclass \texttt{Animal}. The primary difference between predators and prey was their feeding behaviour, with predators actively hunting whilst prey primarily graze or forage. By abstracting common logic to the \texttt{Animal} class, I streamlined the creation of new animal subclasses and enhanced code reusability. This also simplified the act method, allowing the plant and animals to be placed using the same method. The simplification of animal subclass generation will decrease the time and complexity of adding new subclasses in the future.
+The wolf and bobcat species were designated as predators, while squirrels and grouse were categorised as non-predatory prey. Wolves are designed to hunt both squirrels and grouse, while bobcats specialise in preying exclusively on squirrels. These relationships establish a clear food web within the simulation. The addition of multiple predators competing for the same prey species was implemented as a core task. For each species, each species would be more or less likely to breed, and the more likely each species was to reproduce. Both wolf and bobcat species compete for squirrels as a food source. This competition adds a layer of complexity to the ecosystem dynamics. The population sizes of both predator species are influenced by the availability of squirrels, leading to fluctuations in their numbers based on hunting success and squirrel population levels.
+
+\subsection{Male and Female Individuals}
+
+I added an enum class called \texttt{Gender} to distinguish between male and female individuals within the animal populations. The \texttt{getRandomGender()} function within the \texttt{Gender} class utilises the \texttt{Random} module to randomly assign either a male or female gender to each newly created animal. This function is called during the field population process, ensuring a roughly even distribution of genders across all animal species. The existence of the \texttt{Gender} class has been helpful when determining if the animals can breed or not. During breeding attempts, the \texttt{giveBirth} method checks the gender of adjacent animals of the same species. Breeding is only successful if a mate of the opposite gender is found. Furthermore, there are a similar number of males and females. Since they both must exist for the breeding function to execute. Then a function, using the Random module, is executed which decided the size of the litter for the next breeding. The Gender class has enabled a more realistic way to create the next generation, with the need for 2 individuals.
+
+\subsection{Time of Day}
+
+The simulation incorporates the concept of time by using steps to represent minutes. During the \texttt{Time} object initialisation, the \texttt{timeStepIncrement} parameter dictates how many minutes elapse with each simulation step (default: 60 minutes). The \texttt{Grouse} class's \texttt{act} method was overridden to incorporate time-based behaviour. During the night it ignores other activities within act and will not move (to make it more realistic). They are able to breed at night, but at a much reduced rate than normal.
+
+\section{Challenge Tasks}
+
+\subsection{Weather Implementation}
+
+I implemented a weather system that influences the behaviour of simulated agents. The system retrieves real-time weather conditions from the external weather API, weatherapi.com.
+
+\begin{itemize}
+    \item \textbf{Implementation:}
+        \begin{itemize}
+            \item Developed a \texttt{Weather} class to handle API requests and data parsing. The API key is hardcoded for simplicity, though ideally, this would be read from a system environment variable for security reasons.
+            \item Implemented the \texttt{getWeatherEmoji} method to retrieve the current weather condition and map it to corresponding emoji representation.
+            \item The \texttt{getWeatherDescription} method employs \texttt{String} manipulation instead of an external JSON library due to uncertainties about how BlueJ handled external libraries.
+            \item Implemented \texttt{isEnoughStepsPassed} to regulate API calls, checking if 100 simulation steps have elapsed before updating the weather, thus preventing excessive API requests.
+        \end{itemize}
+    \item \textbf{Challenges:}
+        \begin{itemize}
+            \item The weather API code was written and tested in IntelliJ, as the approach to external library handling within BlueJ was unknown.
+            \item Integrating an external API required learning new networking and data handling concepts in Java.
+            \item Due to the inability to utilise external libraries for JSON parsing, I decided to use \texttt{String} manipulation techniques instead. This presented challenges due to the inherent lack of robust error handling and the complexities associated with navigating the structure of JSON data using rudimentary string operations.
+        \end{itemize}
+    \item \textbf{Agent Influence:}
+        \begin{itemize}
+            \item Berries only grow if the weather is sunny/cloudy.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Plant Implementation}
+
+I added seeds and berries as food sources for prey animals, enabling their survival and adding another layer of complexity to the ecosystem. To facilitate the management of both plant and animal entities, I introduced an \texttt{Entity} superclass. This abstraction simplifies various aspects of the simulation, as methods can now be written to handle \texttt{Entity} objects rather than needing separate implementations for animals and plants. For example, the field's \texttt{populate} method, responsible for initialising the simulation, can now add both animals and plants using the same logic, treating them uniformly as \texttt{Entity} objects.
+
+\begin{itemize}
+    \item \textbf{Implementation:}
+        \begin{itemize}
+            \item Introduced \texttt{Seeds} and \texttt{Berries} classes, each with attributes defining their growth, reproduction, and lifespan. The \texttt{Animal} class, \texttt{Plant} class, and the classes of the animals and plants have been modified to inherit from the \texttt{Entity} class. This also required each subclass to make an act method that takes a `Field` object and implements the subclass changes in the environment. Now, methods can be written to handle a single `Entity` object that implements all the subclass differences. This reduces code and makes the project easier to maintain and scale.
+            \item Plants only grow during their specified growth start and end hours, adding time-based realism. This logic is within the \texttt{Plant} class, and the \texttt{Seeds} and \texttt{Berries} subclasses both implement this logic.
+            \item The plants are placed using the populate method, the same as the animals, due to the existence of the \texttt{Entity} class. They also have random changes to spread, increasing the density of plant matter.
+        \end{itemize}
+     \item \textbf{Code and Attributes:}
+        \begin{itemize}
+         \item \textbf{Growth Rate}: How often they grow at their stage
+         \item \textbf{Reproduction Rate}: How often plants reproduce
+         \item \textbf{Life Span}: How long the plant lives, unless set to infinite (-1)
+         \item \textbf{Spread Rate}: How often the plant spread
+         \item \textbf{Growth Start and End Hours}: How often they start and end their time
+        \end{itemize}
+\end{itemize}
+
+\subsection{Disease (WIP)}
+Disease WIP
+
+\section{Code Quality}
+
+\subsection{Coupling}
+
+The refactoring effort to move common animal behaviours to the \texttt{Animal} superclass significantly reduced coupling between specific animal subclasses (\texttt{Wolf}, \texttt{Bobcat}, \texttt{Squirrel}, \texttt{Grouse}). Instead of each subclass containing redundant code for movement, breeding, and eating, these behaviours are now contained within the \texttt{Animal} class. This allows each subclass to focus solely on its unique attributes and behaviours, such as specific food preferences or time-based activity patterns.
+
+\subsection{Cohesion}
+
+The creation of separate \texttt{Seeds} and \texttt{Berries} classes with well-defined attributes (growth rate, reproduction rate, lifespan, spread rate) promotes high cohesion. Each class is responsible for managing its own data and behaviours, leading to modular and understandable code. Furthermore, there is the superclass \texttt{Plant}, that shares common functionalities of plants across the seed and berry classes, improving the code cohesion and readability.
+
+\subsection{Responsibility-Driven Design}
+
+The \texttt{Entity} abstract class is a prime example of responsibility-driven design. By extracting common attributes and behaviours shared by both \texttt{Animal} and \texttt{Plant} classes (e.g., location, \texttt{isAlive} status, \texttt{act} method), the \texttt{Entity} class assumes responsibility for managing these core aspects of all entities in the simulation. This reduces code duplication and simplifies the implementation of specific animal and plant behaviours in their respective subclasses. Furthermore, the Plant and Animal super classes are abstract, requiring the implementation of specific methods in the subclasses.
+
+\subsection{Maintainability}
+
+The \texttt{Weather} class promotes maintainability by including a fallback mechanism. If the external weather API is unavailable or returns invalid data, the simulation defaults to using a randomly generated weather condition. This ensures that the simulation can continue to function even in the absence of a reliable external data source. This design decision reduces the system's reliance on external factors and improves its overall robustness and long-term maintainability.
+
+\section{Known Bugs or Problems}
+
+\begin{itemize}
+    \item \textbf{Population Stability:} Achieving long-term population stability proved challenging. Initial simulations often resulted in the extinction of certain species or an overpopulation of others. This issue was addressed by carefully tuning the breeding probabilities, creation probabilities, and lifespan attributes of each species. Initially, the plants seemed to be growing too quickly and spreading too rapidly, leading to overcrowding and the eventual death of other species due to resource scarcity. Further adjustments to plant growth and reproduction rates were needed to establish a more balanced ecosystem.
+    \item \textbf{Weather API Reliability:} The external weather API is subject to potential downtime or changes in its data format. While the simulation includes a fallback to randomly generated weather, changes to the API's data format could still disrupt the weather system. Future work could involve implementing more robust JSON parsing techniques to better handle potential format changes and ensure continued functionality.
+    \item \textbf{Disease WIP:} Disease WIP
+\end{itemize}
+
+\section{Conclusion}
+
+This assignment provided a valuable opportunity to expand and refine the predator-prey simulation. The implementation of weather and plant growth added realism to the simulation, while the code quality improvements made the codebase more maintainable and scalable. The refactoring has decreased the amount of redudant code in the code, especially due to the creation of the Entity class and the Animal class, which combines a lot of different logic and attributes. The challenges encountered, particularly with population stability and API integration, highlighted areas for future exploration and improvement. The population size of the simulation has been significantly increased through changing the attribues, while the weather has added another challenge. This adds to the real world examples of the predator prey situation, with outside influences.
+
+\end{document}
