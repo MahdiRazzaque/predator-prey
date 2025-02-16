@@ -99,24 +99,24 @@ public class Simulator
      * Stop before the given number of steps if it ceases to be viable.
      * @param numSteps The number of steps to run for.
      */
-//    public void simulate(int numSteps) {
-//        reportStats();
-//        for(int n = 1; n <= numSteps && field.isViable(); n++) {
-//            simulateOneStep();
-//            delay(50);         // adjust this to change execution speed
-//        }
-//    }
     public void simulate(int numSteps) {
         reportStats();
-        for(int n = 1; n <= numSteps; n++) {
-            if(!field.isViable()) { // Check for viability
-                System.out.println("Simulation ended because viability was lost."); // Optional message
-                System.exit(0); // Explicitly terminate the Java program
-            }
+        for(int n = 1; n <= numSteps && field.isViable(); n++) {
             simulateOneStep();
-            delay(50);
+            delay(50);         // adjust this to change execution speed
         }
     }
+//    public void simulate(int numSteps) {
+//        reportStats();
+//        for(int n = 1; n <= numSteps; n++) {
+//            if(!field.isViable()) { // Check for viability
+//                System.out.println("Simulation ended because viability was lost."); // Optional message
+//                System.exit(0); // Explicitly terminate the Java program
+//            }
+//            simulateOneStep();
+//            delay(50);
+//        }
+//    }
     
     /**
      * Run the simulation from its current state for a single step.
@@ -126,6 +126,7 @@ public class Simulator
         time.incrementTime();
         step++;
         System.out.println("Step: " + step);
+        System.out.println("Time: " + time.getFormattedTime());
         // Use a separate Field to store the starting state of
         // the next step.
         Field nextFieldState = new Field(field.getDepth(), field.getWidth());
