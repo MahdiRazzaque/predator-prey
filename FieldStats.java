@@ -38,6 +38,7 @@ public class FieldStats {
         if (!countsValid) {
             generateCounts(field);
         }
+        
         for (Class<?> key : counters.keySet()) {
             Counter info = counters.get(key);
             details.append(info.getName())

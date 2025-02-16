@@ -18,8 +18,8 @@ public class Simulator
     private static final double BOBCAT_CREATION_PROBABILITY = 0.02;
     private static final double SQUIRREL_CREATION_PROBABILITY = 0.045;
     private static final double GROUSE_CREATION_PROBABILITY = 0.05;
-    private static final double SEEDS_CREATION_PROBABILITY = 0.08;
-    private static final double BERRIES_CREATION_PROBABILITY = 0.05;
+    private static final double SEEDS_CREATION_PROBABILITY = 0.008;
+    private static final double BERRIES_CREATION_PROBABILITY = 0.005;
 
 
     private Field field; // Represents the current state of the simulation field, containing all entities.
@@ -35,7 +35,7 @@ public class Simulator
      */
     public Simulator() {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH); // Initialise the field with default depth and width.
-        time = new Time(17,0,0, 10); // Set the initial time to 17:00 with a time step of 10 minutes.
+        time = new Time(8,0,0, 10); // Set the initial time to 17:00 with a time step of 10 minutes.
     }
     
     /**
