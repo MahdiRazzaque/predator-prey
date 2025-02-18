@@ -144,8 +144,7 @@ public class SimulatorView extends JFrame {
                     stats.incrementCount(entity.getClass());
 
                     // Check if this entity is an infected animal and increment the infected count
-                    if(entity instanceof Animal) {
-                        Animal animal = (Animal) entity;
+                    if(entity instanceof Animal animal) {
                         if(animal.getDisease() != null) {
                             stats.incrementInfectedCount();
                         }
