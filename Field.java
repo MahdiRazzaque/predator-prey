@@ -12,7 +12,7 @@ public class Field {
 
     private static final Random rand = Randomizer.getRandom(); // A random number generator for providing random locations.
     private final int depth, width; // The dimensions of the field.
-    private final Map<Location, Entity> field = new HashMap<>(); // Animals mapped by location.
+    private final Map<Location, Entity> field = new HashMap<>(); // Entities mapped by location.
     private final List<Entity> entity = new ArrayList<>(); // List of all entities in the field
 
     /**
@@ -182,6 +182,57 @@ public class Field {
         System.out.printf(plantRowFormat, "Seeds", numSeeds);
         System.out.printf(plantRowFormat, "Berries", numBerries);
         System.out.print(plantHeaderSeparator);
+    }
+
+    /**
+     * Returns the number of living male entities of a given class in the field.
+     * @param entityClass The class of the entity to count.
+     * @return The number of living male entities of the specified class.
+     */
+    public int getMaleCount(Class<?> entityClass) {
+        int count = 0;
+        for (Entity entity : field.values()) {
+            if (entityClass.isInstance(entity) && // Checks if entity is an instance of the given class
+                    entity instanceof Animal animal && // Checks if the entity is an Animal
+                    animal.isAlive() && // Checks if the animal is alive
+                    animal.getGender() == Gender.MALE) { // Checks if the animal is male
+                count++; // Increment count if conditions are met
+            }
+        }
+        return count; // Return the total count
+    }
+
+    /**
+     * Returns the number of living female entities of a given class in the field.
+     * @param entityClass The class of the entity to count.
+     * @return The number of living female entities of the specified class.
+     */
+    public int getFemaleCount(Class<?> entityClass) {
+        int count = 0;
+        for (Entity entity : field.values()) {
+            if (entityClass.isInstance(entity) &&  // Checks if entity is an instance of the given class
+                    entity instanceof Animal animal && // Checks if the entity is an Animal
+                    animal.isAlive() && // Checks if the animal is alive
+                    animal.getGender() == Gender.FEMALE) { // Checks if the animal is female
+                count++; // Increment count if conditions are met
+            }
+        }
+        return count; // Return the total count
+    }
+
+    /**
+     * Returns the number of living plants of a given class in the field.
+     * @param plantClass The class of the plant to count.
+     * @return The number of living plants of the specified class.
+     */
+    public int getPlantCount(Class<? extends Plant> plantClass) {
+        int count = 0;
+        for (Entity entity : field.values()) {
+            if (plantClass.isInstance(entity) && entity.isAlive()) { // Checks if entity is an instance of the given class and alive
+                count++; // Increment count if conditions are met
+            }
+        }
+        return count; // Return the total count
     }
 
     /**

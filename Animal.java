@@ -200,9 +200,10 @@ public class Animal extends Entity {
 
     /**
      * Searches for food in adjacent locations. The animal will consume the first valid food source found,
-     * increasing its food level accordingly.
+     * increasing its food level accordingly. Includes logic to potentially avoid eating
+     * members of species with low populations.
      * @param field The current state of the simulation field.
-     * @return The location of the food source if found, `null` otherwise.
+     * @return The location of the food source if found, {@code null} otherwise.
      */
     protected Location findFood(Field field) {
         if(FOOD_SOURCES.isEmpty()) {
@@ -210,20 +211,40 @@ public class Animal extends Entity {
         }
         List<Location> adjacent = field.getAdjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
-        Location foodLocation = null;
-        while(foodLocation == null && it.hasNext()) {
+        Location foodLocation = null; // Initialise the location of the found food to null.
+        while(foodLocation == null && it.hasNext()) { // Iterate through adjacent locations until food is found or all locations are checked.
             Location loc = it.next();
-            Entity entity = field.getEntityAt(loc);
-            for(String foodSource : FOOD_SOURCES.keySet()) {
-                if(entity != null && foodSource.equals(entity.getClass().getSimpleName())) {
-                    entity.setDead(); // The food source (entity) is consumed.
-                    foodLevel = FOOD_SOURCES.get(foodSource); // Increase food level.
-                    foodLocation = loc; // Record the location of the food.
-                    break; // Stop searching after finding the first food source.
+            Entity entity = field.getEntityAt(loc); // Gets the entity at the current location.
+            for(String foodSource : FOOD_SOURCES.keySet()) { // Iterate through the animal's food sources.
+                if(entity != null && foodSource.equals(entity.getClass().getSimpleName())) { // Check that the entity exists and can be eaten.
+                    boolean shouldEat = true; // Flag to indicate if the animal should eat.
+
+                    if (entity instanceof Animal targetAnimal) { // Check if target is an animal
+                        // Check animal population
+                        int males = field.getMaleCount(targetAnimal.getClass());
+                        int females = field.getFemaleCount(targetAnimal.getClass());
+                        if (males < 5 || females < 5) { // If population is small
+                            shouldEat = rand.nextDouble() < 0.05; // Only eat 5% of the time
+                        }
+                    }
+                    else if (entity instanceof Plant targetPlant) { // Check if target is a plant
+                        // Check plant population
+                        int plantCount = field.getPlantCount(targetPlant.getClass());
+                        if (plantCount < 5) { // If population is small
+                            shouldEat = rand.nextDouble() < 0.05; // Only eat 5% of the time
+                        }
+                    }
+
+                    if (shouldEat) { // If the animal should eat
+                        entity.setDead(); // Kill the target entity
+                        foodLevel = FOOD_SOURCES.get(foodSource); // Increase food level
+                        foodLocation = loc; // Remember the location of the food
+                        break; // Stop searching after finding the first food source.
+                    }
                 }
             }
         }
-        return foodLocation;
+        return foodLocation; // Returns location of food.
     }
 
     /**
