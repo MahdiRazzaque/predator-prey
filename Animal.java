@@ -8,7 +8,7 @@ import java.util.Random;
  * adding animal-specific attributes like age, breeding, food level, and movement.
  * Animal classes should inherit from this class.
  *
- * @author Mahdi Razzaque
+ * @author Mahdi Razzaque and Ozgur Dorunay
  * @version 10.02.2025
  */
 public class Animal extends Entity {
@@ -132,6 +132,9 @@ public class Animal extends Entity {
 
     /**
      * Infect the animal with a disease.
+     * An animal can only become infected if it's currently healthy (no existing disease).
+     *
+     * @param newDisease The disease to infect the animal with
      */
     public void infect(Disease newDisease) {
         if (disease == null) {  // Only get infected if currently healthy
@@ -140,12 +143,20 @@ public class Animal extends Entity {
         }
     }
 
+
+    /**
+     * Get the current disease affecting this animal, if any.
+     *
+     * @return The disease object, or null if the animal is healthy
+     */
     public Disease getDisease() {
         return this.disease;
     }
 
     /**
-     * Handles disease progression, recovery, or death.
+     * Handles disease progression, recovery, or death on each time step.
+     * This method should be called during each step of the simulation
+     * to update the animal's disease state.
      */
     protected void handleDisease() {
         if (disease != null) {
@@ -165,7 +176,10 @@ public class Animal extends Entity {
     }
 
     /**
-     * Spreads disease to adjacent animals.
+     * Attempts to spread disease to adjacent animals in the field.
+     * This simulates disease transmission through proximity.
+     *
+     * @param field The field containing this animal and potential infection targets
      */
     protected void spreadDisease(Field field) {
         if (disease != null) {

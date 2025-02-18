@@ -9,7 +9,7 @@ import java.util.Map;
  * assigned to different entity types. The view also displays simulation statistics
  * such as the current step, population details, and time.
  *
- * @author David J. Barnes and Michael Kölling and Mahdi Razzaque
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque and Ozgur Dorunay
  * @version 10.02.2025
  */
 public class SimulatorView extends JFrame {

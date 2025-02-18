@@ -6,8 +6,8 @@ import java.util.Map;
  * of a field. It is flexible: it will create and maintain a counter 
  * for any class of object that is found within the field.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 7.0
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque and Ozgur Dorunay
+ * @version 18.02.25
  */
 public class FieldStats {
     // Counters for each type of entity (fox, rabbit, etc.) in the simulation.

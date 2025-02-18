@@ -5,7 +5,7 @@ import java.util.*;
  * various entities such as wolves, bobcats, squirrels, grouse, seeds, and berries.
  * The simulation models the interactions between these entities over time.
  *
- * @author David J. Barnes and Michael Kölling and Mahdi Razzaque
+ * @author David J. Barnes and Michael Kölling and Mahdi Razzaque and Ozgur Dorunay
  * @version 10.02.2025
  */
 public class Simulator

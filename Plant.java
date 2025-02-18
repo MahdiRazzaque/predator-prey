@@ -1,18 +1,28 @@
 import java.util.List;
 
-public class Plant extends Entity{
-    protected final String name;
-    protected final int growthRate;
-    protected final int reproductionRate;
-    protected final int lifespan;
-    protected final int spreadRate;
-    protected int age;
-    protected final int growthStartHour;
-    protected final int growthEndHour;
-    protected int growthStage;
-    protected final Class<? extends Plant> PLANT_TYPE;
-    protected Time time;
+/**
+ * Abstract class representing a plant within the simulation. Extends the `Entity` class,
+ * adding plant-specific attributes like growth rate, reproduction rate, lifespan, and growth stages.
+ * Plant classes should inherit from this class.
+ *
+ * @author Ozgur Dorunay and Mahdi Razzaque
+ * @version 10.02.2025
+ */
 
+public class Plant extends Entity{
+    protected final String name; // The name of the plant.
+    protected final int growthRate; // The rate at which the plant grows.
+    protected final int reproductionRate; // The rate at which the plant reproduces.
+    protected final int lifespan; // The lifespan of the plant in days.
+    protected final int spreadRate; // The rate at which the plant spreads.
+    protected int age; // The current age of the plant.
+    protected final int growthStartHour; // The hour when the plant starts growing.
+    protected final int growthEndHour; // The hour when the plant stops growing.
+    protected int growthStage; // The current growth stage of the plant.
+    protected final Class<? extends Plant> PLANT_TYPE; // The type of the plant.
+    protected Time time; // The time of the simulation.
+
+    // Constructor that initializes the Plant with its characteristics and environment.
     public Plant(String name,
                  int growthRate,
                  int reproductionRate,
@@ -77,7 +87,8 @@ public class Plant extends Entity{
     }
 
     /**
-     * Determines if the plant can grow at the current time
+     * Determines if the plant can grow at the current time.
+     * @return {@code true} if the plant can grow, {@code false} otherwise.
      */
     protected boolean canGrow() {
         int currentHour = time.getHour();
@@ -92,7 +103,9 @@ public class Plant extends Entity{
 
 
     /**
-     * Attempts to reproduce by creating new plants in available locations
+     * Attempts to reproduce by creating new plants in available locations.
+     * @param currentField The field currently occupied.
+     * @param nextFieldState The updated field.
      */
     private void reproduce(Field currentField, Field nextFieldState) {
         List<Location> freeLocations = nextFieldState.getFreeAdjacentLocations(getLocation());
@@ -112,14 +125,16 @@ public class Plant extends Entity{
 
 
     /**
-     * Returns name of plant
+     * Returns the name of the plant.
+     * @return The name of the plant.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Returns plant's growth stage
+     * Returns the plant's growth stage.
+     * @return The growth stage of the plant.
      */
     public int getGrowthStage() {
         return growthStage;
