@@ -81,8 +81,39 @@ I added seeds and berries as food sources for prey animals, enabling their survi
         \end{itemize}
 \end{itemize}
 
-\subsection{Disease (WIP)}
-Disease WIP
+\subsection{Disease}
+
+I introduced a disease system to simulate infection dynamics in animals, allowing diseases to spread and affect the ecosystem in a more complex way. To manage the disease mechanics, I created a Disease superclass and derived specific disease types (e.g., Flu and Rabies) from it. This system provides flexibility, allowing different diseases to have unique behaviors while maintaining consistency in their core properties.
+
+\begin{itemize}
+    \item \textbf{Implementation:}
+
+    \begin{itemize}
+        \item Created the \texttt{Disease} superclass to define shared attributes for all diseases, including \textbf{infection duration}, \textbf{transmission probability}, and \textbf{lethality}.
+        \item Introduced subclasses for specific diseases, such as \texttt{Flu} (non-lethal) and \texttt{Rabies} (lethal). Each subclass overrides core methods to reflect the disease's specific behavior.
+        \item The \texttt{Disease} class includes methods like \texttt{spreads()} to determine if a disease should be transmitted to another animal and \texttt{isCured()} to check if the infection has ended.
+        \item Animals are randomly infected during the simulation’s initialization (\texttt{populate} method), and infected animals spread diseases when they encounter others, based on the disease's transmission probability.
+        \item The system tracks infection progress, allowing infected animals to either recover or die based on the disease's duration and lethality.
+    \end{itemize}
+
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{Challenges:}
+
+    \begin{enumerate}
+        \item \textbf{Tracking Infected Animals in \texttt{FieldStats}}
+        Initially, the simulation failed to correctly track the number of infected animals because the \texttt{generateCounts()} method did not update the infected count properly.
+        The issue was traced to the fact that the \texttt{infectedCount} was not being reset in the \texttt{reset()} method, leading to inaccurate statistics.
+        To resolve this, I integrated the \texttt{incrementInfected()} method into the \texttt{Counter} class, ensuring that the infected count is updated correctly with each simulation cycle.
+
+        \item \textbf{Displaying Infection Data in the GUI}
+        The GUI initially failed to show the correct number of infected animals because the \texttt{getPopulationDetails()} method in the \texttt{FieldStats} class did not access the infection count correctly.
+        This was corrected by modifying the \texttt{incrementCount()} method to handle infected and non-infected animals separately, ensuring that the correct statistics were displayed in the interface.
+    \end{enumerate}
+
+\end{itemize}
+
 
 \section{Code Quality}
 
@@ -107,7 +138,6 @@ The \texttt{Weather} class promotes maintainability by including a fallback mech
 \begin{itemize}
     \item \textbf{Population Stability:} Achieving long-term population stability proved challenging. Initial simulations often resulted in the extinction of certain species or an overpopulation of others. This issue was addressed by carefully tuning the breeding probabilities, creation probabilities, and lifespan attributes of each species. Initially, the plants seemed to be growing too quickly and spreading too rapidly, leading to overcrowding and the eventual death of other species due to resource scarcity. Further adjustments to plant growth and reproduction rates were needed to establish a more balanced ecosystem.
     \item \textbf{Weather API Reliability:} The external weather API is subject to potential downtime or changes in its data format. While the simulation includes a fallback to randomly generated weather, changes to the API's data format could still disrupt the weather system. Future work could involve implementing more robust JSON parsing techniques to better handle potential format changes and ensure continued functionality.
-    \item \textbf{Disease WIP:} Disease WIP
 \end{itemize}
 
 \section{Conclusion}
