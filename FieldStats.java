@@ -14,7 +14,8 @@ public class FieldStats {
     private final Map<Class<?>, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
-    private int infectedCount; // Track number of infected animals
+    private Counter infectedCounter; // Use Counter for infected animals
+
 
 
     /**
@@ -25,7 +26,7 @@ public class FieldStats {
         // we might find
         counters = new HashMap<>();
         countsValid = true;
-        infectedCount = 0; // Start at 0
+        infectedCounter = new Counter("Infected"); // Initialize counter for infected animals
     }
 
     /**
@@ -38,7 +39,7 @@ public class FieldStats {
         if (!countsValid) {
             generateCounts(field);
         }
-        
+
         for (Class<?> key : counters.keySet()) {
             Counter info = counters.get(key);
             details.append(info.getName())
@@ -49,7 +50,7 @@ public class FieldStats {
 
         // Include the count of infected animals in the details
         details.append("Infected animals: ")
-                .append(infectedCount);
+                .append(infectedCounter.getCount());
 
         return details.toString();
     }
@@ -65,7 +66,7 @@ public class FieldStats {
             count.reset();
 
         }
-        infectedCount = 0;
+        infectedCounter.reset(); // Reset infected counter
     }
 
 
@@ -84,6 +85,14 @@ public class FieldStats {
         }
         count.increment();
     }
+
+    /**
+     * Increment the count of infected animals.
+     */
+    public void incrementInfectedCount() {
+        infectedCounter.increment();
+    }
+
 
     /**
      * Indicate that an animal count has been completed.
@@ -120,7 +129,7 @@ public class FieldStats {
 
                     // If the entity is an infected animal, count it
                     if (entity instanceof Animal animal && animal.disease != null) {
-                        infectedCount++;
+                        incrementInfectedCount();
                     }
                 }
             }

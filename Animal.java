@@ -140,6 +140,10 @@ public class Animal extends Entity {
         }
     }
 
+    public Disease getDisease() {
+        return this.disease;
+    }
+
     /**
      * Handles disease progression, recovery, or death.
      */
