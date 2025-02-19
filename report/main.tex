@@ -136,7 +136,7 @@ The \texttt{Weather} class promotes maintainability by including a fallback mech
 \section{Known Bugs or Problems}
 
 \begin{itemize}
-    \item \textbf{Population Stability:} Achieving long-term population stability proved challenging. Initial simulations often resulted in the extinction of certain species or an overpopulation of others. This issue was addressed by carefully tuning the breeding probabilities, creation probabilities, and lifespan attributes of each species. Initially, the plants seemed to be growing too quickly and spreading too rapidly, leading to overcrowding and the eventual death of other species due to resource scarcity. Further adjustments to plant growth and reproduction rates were needed to establish a more balanced ecosystem.
+    \item \textbf{Population Stability:} Achieving long-term population stability proved challenging. Despite carefully tuning the breeding probabilities, creation probabilities, and lifespan attributes of each species, I was unable to achieve a truly stable ecosystem. I noticed a tendency for many animals to die of old age or hunger, indicating that the balance between resource availability, lifespan, and predation was not yet optimised. Further refinement is necessary to achieve a balanced ecosystem.
     \item \textbf{Weather API Reliability:} The external weather API is subject to potential downtime or changes in its data format. While the simulation includes a fallback to randomly generated weather, changes to the API's data format could still disrupt the weather system. Future work could involve implementing more robust JSON parsing techniques to better handle potential format changes and ensure continued functionality.
 \end{itemize}
 
