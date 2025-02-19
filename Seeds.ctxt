@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=Seeds
+comment0.text=\r\n\ Concrete\ class\ representing\ Seeds\ within\ the\ simulation.\ Extends\ the\ `Plant`\ class,\r\n\ adding\ specific\ attributes\ like\ growth\ rate,\ reproduction\ rate,\ lifespan,\ and\ spread\ rate.\r\n\ Seeds\ are\ a\ type\ of\ plant\ that\ grows,\ reproduces,\ and\ spreads\ within\ their\ specified\ hours.\r\n\r\n\ @author\ Ozgur\ Dorunay\r\n\ @version\ 10.02.2025\r\n
+comment1.params=location\ simulator\ time
+comment1.target=Seeds(Location,\ Simulator,\ Time)
+numComments=2

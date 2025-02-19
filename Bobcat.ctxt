@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Bobcat
+comment0.text=\r\n\ Represents\ a\ Bobcat\ in\ the\ simulation.\r\n\r\n\ @author\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=randomAge\ location\ gender\ simulator
+comment1.target=Bobcat(boolean,\ Location,\ Gender,\ Simulator)
+comment1.text=\r\n\ Constructor\ for\ the\ Bobcat\ class.\ Creates\ a\ new\ Bobcat\ instance\ with\ the\ specified\ parameters.\r\n\ @param\ randomAge\ If\ true,\ the\ bobcat's\ age\ is\ set\ randomly;\ otherwise,\ it\ starts\ at\ 0.\r\n\ @param\ location\ The\ bobcat's\ initial\ location\ on\ the\ field.\r\n\ @param\ gender\ The\ bobcat's\ gender.\r\n\ @param\ simulator\ The\ simulator\ instance\ managing\ this\ bobcat.\r\n
+comment2.params=
+comment2.target=java.util.HashMap\ createFoodSources()
+comment2.text=\r\n\ Creates\ a\ HashMap\ representing\ the\ food\ sources\ for\ a\ Bobcat\ and\ their\ corresponding\ nutritional\ values.\r\n\ @return\ A\ HashMap\ where\ keys\ are\ food\ source\ names\ (Strings)\ and\ values\ are\ nutritional\ values\ (Integers).\r\n
+numComments=3

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Berries
+comment0.text=\r\n\ Represents\ berry\ plants\ in\ the\ simulation,\ a\ specific\ type\ of\ Plant.\r\n\ Berries\ have\ unique\ growth\ characteristics\ and\ prefer\ specific\ weather\ conditions.\r\n\r\n\ \ *\ @author\ \ Ozgur\ Dorunay\ and\ Mahdi\ Razzaque\r\n\ \ *\ @version\ 18.02.2025\r\n
+comment1.params=location\ simulator\ time
+comment1.target=Berries(Location,\ Simulator,\ Time)
+comment2.params=
+comment2.target=boolean\ canGrow()
+comment2.text=\r\n\ Determines\ if\ the\ plant\ can\ grow\ at\ the\ current\ time.\r\n\ Berries\ only\ grow\ if\ the\ weather\ is\ Sunny\ or\ Cloudy,\ and\ if\ the\ current\ time\ is\ within\ their\ growth\ hours.\r\n\ @return\ {@code\ true}\ if\ the\ plant\ can\ grow,\ {@code\ false}\ otherwise.\r\n
+numComments=3

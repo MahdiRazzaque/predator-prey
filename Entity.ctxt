@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Entity
+comment0.text=\r\n\ Abstract\ class\ representing\ a\ generic\ entity\ within\ the\ simulation.\ \ This\ class\ provides\r\n\ basic\ functionality\ common\ to\ all\ entities,\ such\ as\ tracking\ alive/dead\ status\ and\ location.\r\n\ All\ entities\ in\ the\ simulation\ should\ inherit\ from\ this\ class.\r\n\r\n\ @author\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=location\ simulator
+comment1.target=Entity(Location,\ Simulator)
+comment1.text=\r\n\ Constructor\ for\ the\ Entity\ class.\ Initialises\ a\ new\ entity,\ setting\ it\ as\ alive\ and\r\n\ storing\ its\ location\ and\ the\ simulator\ instance\ it\ belongs\ to.\r\n\ @param\ location\ The\ entity's\ initial\ location\ on\ the\ field.\r\n\ @param\ simulator\ The\ simulator\ instance\ managing\ this\ entity.\r\n
+comment2.params=currentField\ nextFieldState
+comment2.target=void\ act(Field,\ Field)
+comment2.text=\r\n\ Act.\r\n\ @param\ currentField\ The\ current\ state\ of\ the\ field.\r\n\ @param\ nextFieldState\ The\ new\ state\ being\ built.\r\n
+comment3.params=
+comment3.target=boolean\ isAlive()
+comment3.text=\r\n\ Checks\ whether\ the\ entity\ is\ currently\ alive.\r\n\ @return\ `true`\ if\ the\ entity\ is\ alive,\ `false`\ otherwise.\r\n
+comment4.params=
+comment4.target=void\ setDead()
+comment4.text=\r\n\ Marks\ the\ entity\ as\ no\ longer\ alive\ and\ removes\ it\ from\ its\ current\ location.\r\n
+comment5.params=
+comment5.target=Location\ getLocation()
+comment5.text=\r\n\ Returns\ the\ entity's\ current\ location.\r\n\ @return\ The\ entity's\ current\ location\ on\ the\ field.\r\n
+comment6.params=location
+comment6.target=void\ setLocation(Location)
+comment6.text=\r\n\ Sets\ the\ entity's\ location\ to\ the\ specified\ location.\r\n\ @param\ location\ The\ new\ location\ for\ the\ entity.\r\n
+numComments=7

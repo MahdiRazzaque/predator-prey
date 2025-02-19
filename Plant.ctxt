@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=Plant
+comment0.text=\r\n\ Abstract\ class\ representing\ a\ plant\ within\ the\ simulation.\ Extends\ the\ `Entity`\ class,\r\n\ adding\ plant-specific\ attributes\ like\ growth\ rate,\ reproduction\ rate,\ lifespan,\ and\ growth\ stages.\r\n\ Plant\ classes\ should\ inherit\ from\ this\ class.\r\n\r\n\ @author\ Ozgur\ Dorunay\ and\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=name\ growthRate\ reproductionRate\ lifespan\ spreadRate\ growthStartHour\ growthEndHour\ growthStage\ location\ simulator\ time\ plantType
+comment1.target=Plant(java.lang.String,\ int,\ int,\ int,\ int,\ int,\ int,\ int,\ Location,\ Simulator,\ Time,\ java.lang.Class)
+comment2.params=currentField\ nextFieldState
+comment2.target=void\ act(Field,\ Field)
+comment2.text=\r\n\ Plants\ grow,\ reproduce\ and\ die\ based\ on\ different\ properties\r\n\ @param\ currentField\ The\ field\ currently\ occupied\r\n\ @param\ nextFieldState\ The\ updated\ field\r\n
+comment3.params=
+comment3.target=void\ grow()
+comment3.text=\r\n\ Handles\ plant\ growth\ at\ the\ specified\ interval\r\n
+comment4.params=
+comment4.target=boolean\ canGrow()
+comment4.text=\r\n\ Determines\ if\ the\ plant\ can\ grow\ at\ the\ current\ time.\r\n\ @return\ {@code\ true}\ if\ the\ plant\ can\ grow,\ {@code\ false}\ otherwise.\r\n
+comment5.params=currentField\ nextFieldState
+comment5.target=void\ reproduce(Field,\ Field)
+comment5.text=\r\n\ Attempts\ to\ reproduce\ by\ creating\ new\ plants\ in\ available\ locations.\r\n\ @param\ currentField\ The\ field\ currently\ occupied.\r\n\ @param\ nextFieldState\ The\ updated\ field.\r\n
+comment6.params=
+comment6.target=java.lang.String\ getName()
+comment6.text=\r\n\ Returns\ the\ name\ of\ the\ plant.\r\n\ @return\ The\ name\ of\ the\ plant.\r\n
+comment7.params=
+comment7.target=int\ getGrowthStage()
+comment7.text=\r\n\ Returns\ the\ plant's\ growth\ stage.\r\n\ @return\ The\ growth\ stage\ of\ the\ plant.\r\n
+numComments=8

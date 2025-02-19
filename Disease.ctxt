@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Disease
+comment0.text=\r\n\ An\ abstract\ representation\ of\ a\ disease\ that\ can\ affect\ animals\ in\ the\ simulation.\r\n\ Each\ specific\ disease\ will\ inherit\ from\ this\ class\ and\ may\ override\ or\ extend\ its\ functionality.\r\n\r\n\ \ @author\ Ozgur\ Dorunay\r\n\ \ @version\ 18.02.2025\r\n
+comment1.params=name\ infectionDuration\ transmissionRate\ isLethal
+comment1.target=Disease(java.lang.String,\ int,\ double,\ boolean)
+comment1.text=\r\n\ Constructor\ for\ creating\ a\ new\ disease\r\n\r\n\ @param\ name\ The\ name\ of\ the\ disease\r\n\ @param\ infectionDuration\ How\ many\ time\ steps\ the\ infection\ lasts\r\n\ @param\ transmissionRate\ Probability\ from\ 0.0\ to\ 1.0\ of\ spreading\ to\ another\ animal\r\n\ @param\ isLethal\ Whether\ the\ disease\ can\ be\ fatal\r\n
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment2.text=\r\n\ @return\ The\ name\ of\ the\ disease\r\n
+comment3.params=
+comment3.target=boolean\ isLethal()
+comment3.text=\r\n\ @return\ Whether\ this\ disease\ can\ cause\ death\r\n
+comment4.params=
+comment4.target=boolean\ spreads()
+comment4.text=\r\n\ Determines\ whether\ the\ disease\ spreads\ during\ a\ particular\ interaction\r\n\ based\ on\ the\ transmission\ rate\r\n\r\n\ @return\ true\ if\ the\ disease\ spreads,\ false\ otherwise\r\n
+comment5.params=timeInfected
+comment5.target=boolean\ isCured(int)
+comment5.text=\r\n\ Determines\ if\ the\ animal\ has\ fought\ off\ the\ infection\ based\ on\ time\ infected\r\n\r\n\ @param\ timeInfected\ The\ number\ of\ time\ steps\ the\ animal\ has\ been\ infected\r\n\ @return\ true\ if\ the\ animal\ is\ now\ cured,\ false\ if\ still\ infected\r\n
+numComments=6

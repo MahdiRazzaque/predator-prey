@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Squirrel
+comment0.text=\r\n\ Represents\ a\ Squirrel\ in\ the\ simulation.\r\n\ Squirrels\ are\ animals\ that\ eat\ Berries.\ They\ have\ specific\ breeding,\r\n\ age,\ and\ food\ requirements\ defined\ in\ this\ class.\r\n\r\n\ @author\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=randomAge\ location\ gender\ simulator
+comment1.target=Squirrel(boolean,\ Location,\ Gender,\ Simulator)
+comment1.text=\r\n\ Constructs\ a\ new\ Squirrel.\r\n\ A\ squirrel\ can\ be\ created\ with\ a\ random\ age\ or\ a\ specific\ age.\r\n\r\n\ @param\ randomAge\ If\ true,\ the\ squirrel\ will\ have\ a\ random\ age;\ otherwise,\ it\ starts\ at\ age\ 0.\r\n\ @param\ location\ The\ location\ of\ the\ squirrel\ in\ the\ field.\r\n\ @param\ gender\ The\ gender\ of\ the\ squirrel.\r\n\ @param\ simulator\ The\ simulator\ instance.\r\n
+comment2.params=
+comment2.target=java.util.HashMap\ createFoodSources()
+comment2.text=\r\n\ Creates\ a\ map\ of\ food\ sources\ and\ their\ corresponding\ food\ values\ for\ the\ squirrel.\r\n\ This\ map\ defines\ what\ the\ squirrel\ eats\ and\ how\ much\ nutrition\ it\ gets\ from\ each\ food\ source.\r\n\r\n\ @return\ A\ HashMap\ containing\ the\ food\ sources\ (String,\ e.g.,\ "Berries")\ and\ their\ food\ values\ (Integer,\ e.g.,\ 8).\r\n
+numComments=3

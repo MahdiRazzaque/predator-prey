@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Grouse
+comment0.text=\r\n\ Represents\ a\ Grouse\ in\ the\ simulation.\r\n\ Grouse\ are\ animals\ that\ eat\ Seeds.\ They\ have\ specific\ breeding,\r\n\ age,\ and\ food\ requirements\ defined\ in\ this\ class.\ \ Grouse\ behaviour\r\n\ differs\ between\ day\ and\ night.\r\n\r\n\ @author\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=randomAge\ location\ gender\ simulator
+comment1.target=Grouse(boolean,\ Location,\ Gender,\ Simulator)
+comment1.text=\r\n\ Creates\ a\ new\ Grouse.\r\n\r\n\ @param\ randomAge\ If\ true,\ the\ grouse\ will\ have\ a\ random\ age;\ otherwise,\ it\ starts\ at\ age\ 0.\r\n\ @param\ location\ The\ location\ of\ the\ grouse\ in\ the\ field.\r\n\ @param\ gender\ The\ gender\ of\ the\ grouse.\r\n\ @param\ simulator\ The\ simulator\ instance.\r\n
+comment2.params=
+comment2.target=java.util.HashMap\ createFoodSources()
+comment2.text=\r\n\ Creates\ a\ map\ of\ food\ sources\ and\ their\ corresponding\ food\ values\ for\ the\ grouse.\r\n\ This\ map\ defines\ what\ the\ grouse\ eats\ and\ how\ much\ nutrition\ it\ gets\ from\ each\ food\ source.\r\n\r\n\ @return\ A\ HashMap\ containing\ the\ food\ sources\ (String,\ e.g.,\ "Seeds")\ and\ their\ food\ values\ (Integer,\ e.g.,\ 5).\r\n
+comment3.params=currentField\ nextFieldState
+comment3.target=void\ act(Field,\ Field)
+comment3.text=\r\n\ Represents\ the\ behaviour\ of\ the\ grouse\ in\ each\ step\ of\ the\ simulation.\r\n\ The\ grouse\ ages,\ potentially\ decreases\ its\ food\ level,\ and\ then,\r\n\ depending\ on\ the\ time\ of\ day,\ either\ attempts\ to\ breed\ (at\ a\ reduced\ rate\ during\ the\ night)\r\n\ or\ moves\ to\ find\ food\ and/or\ breed\ (during\ the\ day).\r\n\r\n\ @param\ currentField\ The\ field\ the\ grouse\ is\ currently\ in.\r\n\ @param\ nextFieldState\ The\ field\ representing\ the\ next\ state\ of\ the\ simulation.\r\n
+numComments=4

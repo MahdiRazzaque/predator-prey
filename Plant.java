@@ -56,6 +56,10 @@ public class Plant extends Entity{
      */
     @Override
     protected void act(Field currentField, Field nextFieldState) {
+        if (!isAlive()) {
+            return; // Don't act if the plant is dead
+        }
+    
         age++;
 
         //Check if plant should die

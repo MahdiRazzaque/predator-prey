@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Wolf
+comment0.text=\r\n\ Represents\ a\ Wolf\ in\ the\ simulation.\r\n\ Wolves\ are\ predators\ that\ eat\ Squirrels\ and\ Grouse.\r\n\r\n\ @author\ Mahdi\ Razzaque\r\n\ @version\ 10.02.2025\r\n
+comment1.params=randomAge\ location\ gender\ simulator
+comment1.target=Wolf(boolean,\ Location,\ Gender,\ Simulator)
+comment1.text=\r\n\ Constructs\ a\ new\ Wolf.\r\n\r\n\ @param\ randomAge\ If\ true,\ the\ wolf\ will\ have\ a\ random\ age;\ otherwise,\ it\ starts\ at\ age\ 0.\r\n\ @param\ location\ The\ location\ of\ the\ wolf\ in\ the\ field.\r\n\ @param\ gender\ The\ gender\ of\ the\ wolf.\r\n\ @param\ simulator\ The\ simulator\ instance.\r\n
+comment2.params=
+comment2.target=java.util.HashMap\ createFoodSources()
+comment2.text=\r\n\ Creates\ a\ map\ of\ food\ sources\ and\ their\ corresponding\ food\ values\ for\ the\ wolf.\r\n\ This\ map\ defines\ what\ the\ wolf\ eats\ and\ how\ much\ nutrition\ it\ gets\ from\ each\ food\ source.\r\n\r\n\ @return\ A\ HashMap\ containing\ the\ food\ sources\ (String,\ e.g.,\ "Squirrel")\ and\ their\ food\ values\ (Integer,\ e.g.,\ 12).\r\n
+numComments=3
