@@ -14,8 +14,8 @@ A key component of this repository is the inclusion of a Python script (`simulat
 ### Technologies and Libraries
 
 *   **Java SE**: The core simulation is built with standard Java without major external frameworks.
-*   **WeatherAPI**: The optional weather system integrates with [weatherapi.com](https://www.weatherapi.com/) for real-time weather data. [3]
-*   **Google Gemini**: The [`simulator_control.py`](./simulator_control.py) script uses the [Google Gemini API](https://ai.google.dev/) to analyze simulation output and suggest adjustments to entity attributes for achieving population balance. [1]
+*   **WeatherAPI**: The optional weather system integrates with [weatherapi.com](https://www.weatherapi.com/) for real-time weather data.
+*   **Google Gemini**: The [`simulator_control.py`](./simulator_control.py) script uses the [Google Gemini API](https://ai.google.dev/) to analyze simulation output and suggest adjustments to entity attributes for achieving population balance.
 
 ### Project Structure
 
